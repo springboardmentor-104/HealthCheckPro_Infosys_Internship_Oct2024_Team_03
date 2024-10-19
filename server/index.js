@@ -2,6 +2,7 @@ import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import cors from "cors"
+import authRoutes from "./routes/auth.js"
 
 dotenv.config()
 const app = express() // initialize express app instance
@@ -10,6 +11,9 @@ const app = express() // initialize express app instance
 app.use(express.json()); // to parse JSON requests
 app.use(express.urlencoded({ extended: true }));
 app.use(cors()); // to enable cors
+
+// routes
+app.use("/auth", authRoutes)
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("Connected to MongoDB"))
