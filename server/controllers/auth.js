@@ -78,3 +78,48 @@ export const signup = async(req, res) => {
         res.status(400).json({ error: error.message })
     }
 }
+
+export const signIn = async(req, res) => {
+    const { email, password } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+        if(!user)
+            return res.status(400).json({ error: "invalid credentials: email not found" })
+
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch)
+            return res.status(400).json({ error: "invalid credentials: password doesn't matched"})
+
+        res.status(200).json({ message: "Logged in successfully!" })
+    } catch(error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+export const resetPassword = async(req, res) => {
+    const { email, otp, newPassword } = req.body
+    console.log("received OTP: ", otp)
+    console.log(typeof(otp))
+
+    if(!otpStore[email] || otpStore[email] !== otp)
+        return res.status(400).json({ error: "invalid otp!" })
+
+    try {
+        const user = await User.findOne({ email })
+        if(!user) 
+            return res.status(400).json({ error: "user not found!" })
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+        user.password = hashedPassword
+        await user.save()
+
+        delete otpStore[email]
+
+        res.status(200).json({ message: "password reset successfully!" })
+    } catch(error) {
+        res.status(500).json({ error: error.message })
+    }
+}
