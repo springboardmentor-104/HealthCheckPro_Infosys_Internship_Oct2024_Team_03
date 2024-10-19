@@ -1,0 +1,291 @@
+<style>
+  .login-container {
+    background-color: #fff;
+    display: flex;
+    padding: 0 80px 0 0;
+    gap: 40px 50px;
+    overflow: hidden;
+    flex-wrap: wrap;
+    font: 16px Inter, sans-serif;
+  }
+  
+  @media (max-width: 991px) {
+    .login-container {
+      padding-right: 20px;
+    }
+  }
+  
+  .sidebar {
+    background: var(--main, linear-gradient(270deg, #3498db 0.09%, #31b2a6 59.04%, #2ecc71 99.73%));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: flex-start;
+    font-size: 30px;
+    color: #fff;
+    font-weight: 700;
+    padding: 22px 0 334px 13px;
+  }
+  
+  @media (max-width: 991px) {
+    .sidebar {
+      max-width: 100%;
+      padding-bottom: 100px;
+    }
+  }
+  
+  .logo-container {
+    display: flex;
+  }
+  
+  .logo {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 100px;
+    max-width: 100%;
+  }
+  
+  .brand-name {
+    align-self: flex-start;
+    margin-top: 33px;
+    flex-grow: 1;
+  }
+  
+  .sidebar-image {
+    aspect-ratio: 1.73;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    margin: 97px -57px 0 0;
+  }
+  
+  @media (max-width: 991px) {
+    .sidebar-image {
+      max-width: 100%;
+      margin-top: 40px;
+    }
+  }
+  
+  .back-link {
+    align-self: flex-start;
+    display: flex;
+    margin-top: 74px;
+    gap: 9px;
+    color: #8692a6;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  
+  @media (max-width: 991px) {
+    .back-link {
+      margin-top: 40px;
+      white-space: initial;
+    }
+  }
+  
+  .back-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 20px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    margin: auto 0;
+  }
+  
+  @media (max-width: 991px) {
+    .login-form {
+      max-width: 100%;
+    }
+  }
+  
+  .form-title {
+    color: #000;
+    font-size: 30px;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+  
+  .form-description {
+    color: #8692a6;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 991px) {
+    .form-description {
+      margin-right: 10px;
+    }
+  }
+  
+  .form-divider {
+    margin-top: 15px;
+    height: 1px;
+    border: 1px solid #f5f5f5;
+  }
+  
+  @media (max-width: 991px) {
+    .form-divider {
+      max-width: 100%;
+    }
+  }
+  
+  .input-label {
+    color: #696f79;
+    align-self: flex-start;
+    margin-top: 24px;
+  }
+  
+  .input-field {
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px 3px rgba(0, 0, 0, 0.11);
+    margin-top: 14px;
+    color: #494949;
+    white-space: nowrap;
+    padding: 25px;
+    border: 1px solid #1565d8;
+  }
+  
+  @media (max-width: 991px) {
+    .input-field {
+      max-width: 100%;
+      white-space: initial;
+      padding: 0 20px;
+    }
+  }
+  
+  .remember-me {
+    align-self: flex-start;
+    display: flex;
+    margin-top: 23px;
+    gap: 9px;
+    color: #696f79;
+  }
+  
+  .checkbox-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 20px;
+  }
+  
+  .submit-button {
+    border-radius: 6px;
+    background: var(--main, linear-gradient(270deg, #3498db 0.09%, #31b2a6 59.04%, #2ecc71 99.73%));
+    display: flex;
+    margin-top: 28px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 20px 80px;
+  }
+  
+  @media (max-width: 991px) {
+    .submit-button {
+      max-width: 100%;
+      padding: 0 20px;
+    }
+  }
+  
+  .button-text-container {
+    display: flex;
+    width: 153px;
+    max-width: 100%;
+    flex-direction: column;
+  }
+  
+  .button-text-hidden {
+    color: #000;
+    align-self: flex-start;
+  }
+  
+  .button-text-visible {
+    color: #fff;
+    align-self: flex-end;
+    z-index: 10;
+    margin-top: -13px;
+  }
+  
+  .signup-link {
+    color: #696f79;
+    align-self: center;
+    margin-top: 43px;
+  }
+  
+  @media (max-width: 991px) {
+    .signup-link {
+      margin-top: 40px;
+    }
+  }
+  
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  </style>
+  
+  <section class="login-container">
+    <aside class="sidebar">
+      <div class="logo-container">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/55bfb7df5a9affa715093bcf538c0a86e12e628ed29e0101acc94dfe156b3faf?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" class="logo" alt="Health Check Pro Logo" />
+        <h1 class="brand-name">Health Check Pro</h1>
+      </div>
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/cba93680a2fd530d4e558ec7cd58ad3283bf592b8aa42eac2e8e568b0586e229?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" class="sidebar-image" alt="Decorative sidebar image" />
+    </aside>
+    
+    <nav class="back-link">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6897bded526be87ee5189c26ce90ff12b05ed0966c88f0e2b3172c302f44e1c3?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" class="back-icon" alt="" />
+      <a href="#" tabindex="0">Back</a>
+    </nav>
+    
+    <main class="login-form">
+      <h2 class="form-title">Account Login</h2>
+      <p class="form-description">
+        If you are already a member you can login with your email address and password.
+      </p>
+      <hr class="form-divider" />
+      
+      <form>
+        <label for="email" class="input-label">Email address</label>
+        <input type="email" id="email" class="input-field" placeholder="Sampleuser@email.com" required />
+        
+        <label for="password" class="input-label">Password</label>
+        <input type="password" id="password" class="input-field" placeholder="****************" required />
+        
+        <div class="remember-me">
+          <input type="checkbox" id="remember" class="visually-hidden" />
+          <label for="remember">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/1c57e1cba1b65416bdec9cc6f54c311b938e46964b077d52ee44cfaa0194a428?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" class="checkbox-icon" alt="" />
+            Remember me
+          </label>
+        </div>
+        
+        <button type="submit" class="submit-button">
+          <span class="button-text-container">
+            <span class="button-text-hidden visually-hidden">Register Account</span>
+            <span class="button-text-visible">Register Account</span>
+          </span>
+        </button>
+      </form>
+      
+      <p class="signup-link">
+        Don't have an account? <a href="#" tabindex="0">Sign up here</a>
+      </p>
+    </main>
+  </section>
