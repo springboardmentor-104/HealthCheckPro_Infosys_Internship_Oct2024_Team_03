@@ -1,0 +1,191 @@
+<style>
+    .signup-container {
+      background-color: #fff;
+      display: flex;
+      padding-right: 80px;
+      gap: 40px 50px;
+      overflow: hidden;
+      flex-wrap: wrap;
+      font: 16px Inter, sans-serif;
+    }
+    .sidebar {
+      background: linear-gradient(270deg, #3498db 0.09%, #31b2a6 59.04%, #2ecc71 99.73%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 30px;
+      color: #fff;
+      font-weight: 700;
+      padding: 11px 0 295px;
+    }
+    .logo-container {
+      align-self: start;
+      display: flex;
+    }
+    .logo-image {
+      aspect-ratio: 1;
+      object-fit: contain;
+      object-position: center;
+      width: 100px;
+      max-width: 100%;
+    }
+    .logo-text {
+      flex-grow: 1;
+      margin: auto 0;
+    }
+    .sidebar-image {
+      aspect-ratio: 1.64;
+      object-fit: contain;
+      object-position: center;
+      width: 100%;
+      margin-top: 148px;
+    }
+    .back-link {
+      align-self: start;
+      display: flex;
+      margin-top: 74px;
+      gap: 9px;
+      color: #8692a6;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .back-icon {
+      aspect-ratio: 1;
+      object-fit: contain;
+      object-position: center;
+      width: 20px;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      color: #696f79;
+      font-weight: 500;
+      margin: auto 0;
+    }
+    .page-title {
+      color: #000;
+      font-size: 30px;
+      font-weight: 700;
+      align-self: start;
+    }
+    .page-description {
+      color: #8692a6;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+      margin-top: 10px;
+    }
+    .divider {
+      margin-top: 15px;
+      width: 427px;
+      max-width: 100%;
+      height: 1px;
+      border: 1px solid #f5f5f5;
+    }
+    .form-label {
+      align-self: start;
+      margin-top: 24px;
+    }
+    .form-input {
+      border-radius: 6px;
+      background-color: #fff;
+      box-shadow: 0 4px 10px 3px rgba(0, 0, 0, 0.11);
+      margin-top: 14px;
+      color: #494949;
+      padding: 25px 17px;
+      border: 1px solid #1565d8;
+      width: 100%;
+    }
+    .submit-button {
+      border-radius: 6px;
+      background: linear-gradient(270deg, #3498db 0.09%, #31b2a6 59.04%, #2ecc71 99.73%);
+      margin-top: 38px;
+      color: #fff;
+      text-align: center;
+      padding: 23px 70px;
+      border: none;
+      cursor: pointer;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    @media (max-width: 991px) {
+      .signup-container {
+        padding-right: 20px;
+      }
+      .sidebar {
+        max-width: 100%;
+        padding-bottom: 100px;
+      }
+      .sidebar-image {
+        max-width: 100%;
+        margin-top: 40px;
+      }
+      .back-link {
+        margin-top: 40px;
+        white-space: initial;
+      }
+      .main-content {
+        max-width: 100%;
+      }
+      .page-description {
+        margin-right: 10px;
+      }
+      .form-input {
+        max-width: 100%;
+        padding-right: 20px;
+      }
+      .submit-button {
+        max-width: 100%;
+        padding: 23px 20px;
+      }
+    }
+  </style>
+  
+  <section class="signup-container">
+    <aside class="sidebar">
+      <div class="logo-container">
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/55bfb7df5a9affa715093bcf538c0a86e12e628ed29e0101acc94dfe156b3faf?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" alt="" class="logo-image" />
+        <h1 class="logo-text">Health Check Pro</h1>
+      </div>
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7d408e91bd7ba02b339bb70e3cf46325e49b3f286a53871a604e1af5ad1098b3?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" alt="Health Check Pro illustration" class="sidebar-image" />
+    </aside>
+    
+    <main class="main-content">
+      <a href="#" class="back-link">
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/6897bded526be87ee5189c26ce90ff12b05ed0966c88f0e2b3172c302f44e1c3?placeholderIfAbsent=true&apiKey=0629638378364dbbb9f81ebcb166f4cd" alt="" class="back-icon" />
+        <span>Back</span>
+      </a>
+      
+      <h2 class="page-title">Account Signup</h2>
+      <p class="page-description">
+        <strong>Your commitment to health is paying off. Keep it up!</strong>
+      </p>
+      
+      <div class="divider"></div>
+      
+      <form>
+        <label for="fullName" class="form-label">Full Name</label>
+        <input type="text" id="fullName" name="fullName" class="form-input" value="Sayak Bhowmik" required />
+        
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" id="email" name="email" class="form-input" value="sampleuser@email.com" required />
+        
+        <label for="gender" class="form-label">Gender</label>
+        <input type="text" id="gender" name="gender" class="form-input" value="Male" required />
+        
+        <label for="dob" class="form-label">Date Of Birth</label>
+        <input type="text" id="dob" name="dob" class="form-input" value="12/12/2004" required />
+        
+        <button type="submit" class="submit-button">Continue</button>
+      </form>
+    </main>
+  </section>
