@@ -5,7 +5,9 @@ function App() {
 
   return (
     <>
-      <Routes />
+      <div className="App">
+        <Routes />
+      </div>
     </>
   )
 }
