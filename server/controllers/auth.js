@@ -18,7 +18,7 @@ export const sendOTP = async(req, res) => {
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: "HealthCheckPro email verification OTP",
+            subject: `HealthCheckPro email verification OTP: ${otp}`,
             text: `Your OTP for email verification is ${otp}`
         }
 
@@ -49,15 +49,13 @@ export const verifyOTP = async(req, res) => {
 }
 
 export const signup = async(req, res) => {
-    console.log("reg")
-    const { username, email, password, name, gender, dateOfBirth } = req.body
-    console.log(req.body)
+    let { username, email, password, name, gender, dateOfBirth } = req.body
 
-    if(!verifiedEmails[email])
+    if(!verifiedEmails[email]) {
         return res.status(400).json({ error: `${email} is not verified!` })
+    }
 
     try {
-        console.log("entered")
         const salt = await bcrypt.genSalt()
         const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -67,7 +65,7 @@ export const signup = async(req, res) => {
             password: hashedPassword,
             name,
             gender,
-            dateOfBirth
+            dateOfBirth: new Date(dateOfBirth)
         })
 
         await newUser.save()
