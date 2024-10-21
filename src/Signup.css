@@ -1,0 +1,90 @@
+/* src/Signup.css */
+
+.signup-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .left-section {
+    flex: 1;
+    background: linear-gradient(to bottom right, #1d976c 50%, #00a8cc 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .illustration {
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+  }
+  
+  .right-section {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  
+  /* Align the back button to the top-left corner */
+  .back-container {
+    position: absolute;
+    top: 100px;
+    left: 30px;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 60px;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    color: #777;
+    margin-bottom: 30px;
+  }
+  
+  .signup-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .signup-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .continue-button {
+    background: linear-gradient(to right, #1d976c, #93f9b9);
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .continue-button:hover {
+    background: linear-gradient(to right, #169b62, #6fe7a5);
+  }
+  
