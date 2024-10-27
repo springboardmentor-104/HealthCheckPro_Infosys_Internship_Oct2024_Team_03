@@ -73,7 +73,7 @@ const ResetPassword = () => {
   return (
     <Toast.Provider swipeDirection="right">
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-400 to-blue-600">
-        <div className="flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm max-w-4xl m-8 w-full">
+        <div className="flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-lg bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm max-w-4xl m-8 w-full">
           {/* Left Section */}
           <div className="w-full md:w-1/2 flex items-center justify-center p-8">
             <img
