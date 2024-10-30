@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import categoryRoutes from "./routes/category.js";
 import adminRoutes from "./routes/admin.js";
+import userRoutes from "./routes/assessment.js";
 
 dotenv.config();
 const app = express(); // initialize express app instance
@@ -18,6 +19,7 @@ app.use(cors()); // to enable cors
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/categories", categoryRoutes);
+app.use("/user-assessment", userRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)

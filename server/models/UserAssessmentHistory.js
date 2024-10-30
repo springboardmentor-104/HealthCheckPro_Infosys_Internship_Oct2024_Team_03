@@ -17,12 +17,12 @@ const assessmentScoreSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
       },
-      score: {
-        type: Number,
-        required: true,
-      },
     },
   ],
+  totalScore: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const UserAssessmentHistorySchema = new mongoose.Schema(
@@ -40,6 +40,7 @@ const UserAssessmentHistorySchema = new mongoose.Schema(
     overallScore: {
       type: Number,
       required: true,
+      default: 0
     },
     date: {
       type: Date,
