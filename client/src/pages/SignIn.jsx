@@ -21,11 +21,30 @@ const navigate = useNavigate()
       }),
     });
 
-    if (response.status === 201) {
-      console.log("registration successful!");
-      setToastMessage("Registration successful.");
+    const responseJson = await response.json();
+    console.log({responseJson})
+
+    if (response.status === 200) {
+      console.log("loggedIn successfully!");
+      setToastMessage("LoggedIn successfully!");
       setShowSuccessNotification(true);
       setTimeout(() => setShowSuccessNotification(false), 3000);
+
+      const userStatus = await fetch(`http://localhost:3000/user-assessment/status`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "userid": `${responseJson.user._id}`
+        }
+      });
+
+      const status = await userStatus.json();
+      console.log({status});
+
+      if(status.attemptNumber === 0) {
+        navigate("/")
+      }
+
       navigate("/home");
     }
   };
