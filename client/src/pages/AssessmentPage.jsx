@@ -119,7 +119,7 @@ const AssessmentPage = () => {
               <RadioGroup.Item
                 key={option.id}
                 value={option.id.toString()}
-                className={`flex items-center p-4 border border-gray-300 rounded-xl cursor-pointer transition ${
+                className={`flex items-center p-4 border border-gray-300 rounded-full cursor-pointer transition ${
                   selectedOption === option.id.toString()
                     ? "bg-blue-100 border-blue-400"
                     : "bg-white"

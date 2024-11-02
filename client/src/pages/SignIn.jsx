@@ -1,9 +1,12 @@
 import { useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../features/user/userSlice";
 
 const SignIn = () => {
-const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
@@ -29,23 +32,9 @@ const navigate = useNavigate()
       setToastMessage("LoggedIn successfully!");
       setShowSuccessNotification(true);
       setTimeout(() => setShowSuccessNotification(false), 3000);
-
-      const userStatus = await fetch(`http://localhost:3000/user-assessment/status`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "userid": `${responseJson.user._id}`
-        }
-      });
-
-      const status = await userStatus.json();
-      console.log({status});
-
-      if(status.attemptNumber === 0) {
-        navigate("/")
-      }
-
-      navigate("/home");
+      dispatch(setUser(responseJson.user));
+      
+      navigate("/dashboard");
     }
   };
 

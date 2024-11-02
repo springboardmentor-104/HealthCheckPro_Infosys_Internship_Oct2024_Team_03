@@ -1,37 +1,86 @@
 import * as Toast from "@radix-ui/react-toast";
 import * as Progress from "@radix-ui/react-progress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const NewUserAssessmentPage = () => {
+  const user = useSelector(state => state.user);
+  const userId = user.user._id;
+  const navigate = useNavigate();
   const [ isNewRegistration, setIsNewRegistration ] = useState(false);
-  const [progress, setProgress] = useState(25);
+  const [ isNewAndIncomplete, setIsNewAndIncomplete ] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [ completedCategories, setCompletedCategories ] = useState([]);
+  const [ userCompletedCategoriesNames, setUserCompletedCategoriesNames ] = useState([]);
 
-  const getStatus = async (req, res) => {
-    const response = await fetch(`http://localhost:3000/user-assessment/status`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "userid": "6714f6b7e08a34409125cc0c"
+  const getStatus = async () => {
+    const response = await fetch(
+      `http://localhost:3000/user-assessment/status`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          userid: userId, // 6714f6b7e08a34409125cc0c
+        },
       }
-    });
+    );
 
     const status = await response.json();
     console.log({status});
 
-    if(status.attemptNumber === 0) {
-      
-    } else if(status.attemptNumber === 1 && !status.isComplete) {
+    const completedCategoriesNumber = status.completedCategories?.length;
+    setProgress(25 * completedCategoriesNumber);
 
+    setCompletedCategories(status.completedCategories);
+    console.log("completed categories: ", status.completedCategories)
+    console.log({completedCategories});
+
+    if(status.attemptNumber === 0) {
+      setIsNewRegistration(true);
+      console.log({status});
+    } else if(status.attemptNumber === 1 && !status.isComplete) {
+      setIsNewAndIncomplete(true);
+      console.log({ status });
     } else if(status.isComplete) {
-      
+      navigate("/dashboard");
+      console.log({ status });
     }
 
-    
+    getCategories();
   }
+
+  const getCategories = async () => {
+    const response = await fetch(`http://localhost:3000/categories`, {
+      method: "GET"
+    });
+
+    const categories = await response.json();
+    console.log({categories});
+
+    const completedCategoriesNames = categories.map((category) => {
+      if(completedCategories.includes(category._id)) {
+        return category.categoryName.toUpperCase()
+      }
+    })
+
+    console.log({completedCategoriesNames})
+    setUserCompletedCategoriesNames(completedCategoriesNames);
+
+    // console.log({categories});
+    // console.log(categories.map((category) => category.categoryName.toUpperCase()));
+    // setCompletedCategories(categories.map((category) => category.categoryName.toUpperCase()));
+  }
+
+  useEffect(() => {
+    getStatus();
+  }, [])
 
   return (
     <Toast.Provider swipeDirection="right">
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r "> {/* from-green-300 to-blue-300 */}
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r ">
+        {" "}
+        {/* from-green-300 to-blue-300 */}
         <div className="flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-lg bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm max-w-4xl m-8 w-full">
           {/* Left Section */}
           <div className="w-full md:w-1/2 flex items-center justify-center p-8">
@@ -43,13 +92,29 @@ const NewUserAssessmentPage = () => {
           </div>
           {/* Right Section */}
           <div className="w-full md:w-1/2 p-10 flex flex-col justify-center bg-gray-50">
-            <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center md:text-left">
-              Great Start! Keep Going!
-            </h2>
-            <p className="text-gray-700 mb-4 text-center">
-              You&apos;ve made great progress! Complete the remaining
-              assessments to get your overall health score.
-            </p>
+            {isNewRegistration && (
+              <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center md:text-left">
+                Welcome to Your Health Journey!
+              </h2>
+            )}
+            {isNewAndIncomplete && (
+              <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center md:text-left">
+                Great Start! Keep Going!
+              </h2>
+            )}
+
+            {isNewRegistration && (
+              <p className="text-gray-700 mb-4 text-center">
+                Take your first assessment round to get personalized insights
+              </p>
+            )}
+            {isNewAndIncomplete && (
+              <p className="text-gray-700 mb-4 text-center">
+                You&apos;ve made great progress! Complete the remaining
+                assessments to get your overall health score.
+              </p>
+            )}
+
             <div className="flex items-center mb-10 space-x-4">
               <Progress.Root
                 className="relative w-full bg-gray-200 rounded-full h-2.5 "
@@ -66,22 +131,30 @@ const NewUserAssessmentPage = () => {
               Please complete the following assessments:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <button className="bg-green-100 text-blue-700 py-2 rounded-full">
+              <button className={userCompletedCategoriesNames.includes("PHYSICAL") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
                 PHYSICAL
               </button>
-              <button className="bg-red-100 text-blue-700 py-2 rounded-full">
+              <button className={userCompletedCategoriesNames.includes("MENTAL") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
                 MENTAL
               </button>
-              <button className="bg-red-100 text-blue-700 py-2 rounded-full">
+              <button className={userCompletedCategoriesNames.includes("DIET") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
                 DIET
               </button>
-              <button className="bg-red-100 text-blue-700 py-2 rounded-full">
+              <button className={userCompletedCategoriesNames.includes("LIFESTYLE") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
                 LIFESTYLE
               </button>
             </div>
-            <button className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200">
-              Continue Your Assessment
-            </button>
+            {isNewRegistration && (
+              <button className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200">
+                Start Your Assessment
+              </button>
+            )}
+            {isNewAndIncomplete && (
+              <button className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
+                onClick={() => navigate("/assessment")}>
+                Continue Your Assessment
+              </button>
+            )}
           </div>
         </div>
         <Toast.Root

@@ -9,7 +9,7 @@ export const checkUserAssessmentStatus = async (req, res) => {
         const attemptNumber = history.length;
 
         if(attemptNumber === 0) {
-            res.json({ attemptNumber });
+            res.json({ attemptNumber, completedCategories: [] });
         } else {
             const currentAttempt = history[0];
             const completedCategories = currentAttempt.assessments.map(assessment => assessment.categoryId);

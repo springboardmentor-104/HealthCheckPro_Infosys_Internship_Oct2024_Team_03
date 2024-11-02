@@ -6,6 +6,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Layout from "./Layout";
 import NewUserAssessmentPage from "./pages/NewUserAssessmentPage";
 import AssessmentPage from "./pages/AssessmentPage";
+import Dashboard from "./pages/Dashboard";
 
 const routes = () => {
   return (
@@ -18,6 +19,7 @@ const routes = () => {
           <Route path="/home" element={<Homepage />} />
           <Route path="/new-user-assessment" element={<NewUserAssessmentPage />} />
           <Route path="/assessment" element={<AssessmentPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </Router>
