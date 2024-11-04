@@ -131,27 +131,56 @@ const NewUserAssessmentPage = () => {
               Please complete the following assessments:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <button className={userCompletedCategoriesNames.includes("PHYSICAL") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
+              <button
+                className={
+                  userCompletedCategoriesNames.includes("PHYSICAL")
+                    ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default"
+                    : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"
+                }
+              >
                 PHYSICAL
               </button>
-              <button className={userCompletedCategoriesNames.includes("MENTAL") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
+              <button
+                className={
+                  userCompletedCategoriesNames.includes("MENTAL")
+                    ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default"
+                    : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"
+                }
+              >
                 MENTAL
               </button>
-              <button className={userCompletedCategoriesNames.includes("DIET") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
+              <button
+                className={
+                  userCompletedCategoriesNames.includes("DIET")
+                    ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default"
+                    : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"
+                }
+              >
                 DIET
               </button>
-              <button className={userCompletedCategoriesNames.includes("LIFESTYLE") ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default" : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"}>
+              <button
+                className={
+                  userCompletedCategoriesNames.includes("LIFESTYLE")
+                    ? "bg-green-100 text-blue-700 py-2 rounded-full cursor-default"
+                    : "bg-red-100 hover:bg-blue-100 hover:shadow-sm text-blue-700 py-2 rounded-full"
+                }
+              >
                 LIFESTYLE
               </button>
             </div>
             {isNewRegistration && (
-              <button className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200">
+              <button
+                className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
+                onClick={() => navigate("/assessment")}
+              >
                 Start Your Assessment
               </button>
             )}
             {isNewAndIncomplete && (
-              <button className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
-                onClick={() => navigate("/assessment")}>
+              <button
+                className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
+                onClick={() => navigate("/assessment")}
+              >
                 Continue Your Assessment
               </button>
             )}
