@@ -1,13 +1,40 @@
 import React, { useState } from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
+const Stepper = ({ currentCategory, categories, completedSteps }) => {
+  return (
+    <div className="flex justify-around mb-8">
+      {categories.map((category) => (
+        <div key={category.id} className="flex flex-col items-center">
+          <div
+            className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shadow-lg ${
+              currentCategory === category.id
+                ? "bg-blue-500 animate-pulse"
+                : completedSteps.has(category.id)
+                ? "bg-green-500"
+                : "bg-gray-300"
+            }`}
+          />
+          <span
+            className={`mt-3 text-lg ${
+              currentCategory === category.id ? "text-blue-500 font-semibold" : "text-gray-700"
+            }`}
+          >
+            {category.name}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const AssessmentPage = () => {
-    const categories = [
+  const categories = [
     { id: "physical", name: "Physical" },
     { id: "mental", name: "Mental" },
     { id: "diet", name: "Diet" },
     { id: "lifestyle", name: "Lifestyle" },
-    ];
+  ];
 
   const questionsData = [
     {
@@ -30,12 +57,12 @@ const AssessmentPage = () => {
         { id: 4, text: "Never" },
       ],
     },
-    // Add more questions as needed
   ];
 
   const [currentCategory, setCurrentCategory] = useState("physical");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [completedSteps, setCompletedSteps] = useState(new Set());
 
   const currentQuestion = questionsData[currentQuestionIndex];
 
@@ -48,7 +75,7 @@ const AssessmentPage = () => {
     if (currentQuestionIndex < questionsData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Handle submit logic here
+      setCompletedSteps((prev) => new Set(prev).add(currentCategory));
       alert("Assessment submitted!");
     }
   };
@@ -61,27 +88,35 @@ const AssessmentPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r">
-      <div>
-        <div className="flex flex-col items-center p-6 bg-gray-50 rounded-3xl">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900">
-            Categories
-          </h2>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300">
+      <div className="max-w-6xl w-full p-8">
+        <Stepper
+          currentCategory={currentCategory}
+          categories={categories}
+          completedSteps={completedSteps}
+        />
+        <div className="flex flex-col items-center p-8 bg-white rounded-3xl shadow-2xl">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900">Categories</h2>
           {categories.map((category) => (
             <div
               key={category.id}
-              className={`w-full py-2 px-4 mb-2 text-center rounded-full cursor-pointer transition ${
+              className={`w-full py-3 px-4 mb-3 text-center rounded-full cursor-pointer shadow-md transition-transform transform ${
                 currentCategory === category.id
-                  ? "bg-blue-400 text-white"
-                  : "bg-white text-gray-700"
+                  ? "bg-blue-400 text-white scale-105"
+                  : "bg-white text-gray-700 hover:scale-105 hover:bg-blue-200"
               }`}
-              onClick={() => setCurrentCategory(category.id)}
+              onClick={() => {
+                if (!completedSteps.has(currentCategory)) {
+                  alert("Please complete the current category first.");
+                  return;
+                }
+                setCurrentCategory(category.id);
+              }}
             >
               {category.name}
             </div>
           ))}
-          {/* Progress Indicator */}
-          <div className="mt-4 w-full text-center">
+          <div className="mt-6 w-full text-center">
             <p className="text-gray-600">
               Progress:{" "}
               {categories.findIndex((cat) => cat.id === currentCategory) + 1} of{" "}
@@ -90,24 +125,22 @@ const AssessmentPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-lg bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm max-w-4xl m-8 w-full">
-        {/* Left Section: Graphic */}
-        <div className="w-full md:w-1/3 flex items-center justify-center p-8 scale-125">
+      <div className="flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm max-w-4xl m-8 w-full">
+        <div className="w-full md:w-1/3 flex items-center justify-center p-10">
           <img
             src="../../health-assessment.png"
             alt="Health Assessment"
-            className="rounded-xl w-full h-auto scale-90"
+            className="rounded-xl w-full h-auto shadow-md"
           />
         </div>
-        {/* Right Section: Question and Options */}
-        <div className="w-full md:w-2/3 p-8 flex flex-col justify-center bg-gray-50">
-          <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center md:text-left">
+        <div className="w-full md:w-2/3 p-10 flex flex-col justify-center bg-gray-50">
+          <h2 className="text-3xl font-semibold mb-6 text-gray-900 text-center md:text-left">
             Assessment
           </h2>
-          <p className="text-gray-700 mb-4 text-center">
+          <p className="text-gray-700 mb-6 text-center">
             Question {currentQuestionIndex + 1} of {questionsData.length}
           </p>
-          <h3 className="text-xl font-medium mb-6 text-gray-900">
+          <h3 className="text-xl font-medium mb-8 text-gray-900">
             {currentQuestion.text}
           </h3>
           <RadioGroup.Root
@@ -119,15 +152,15 @@ const AssessmentPage = () => {
               <RadioGroup.Item
                 key={option.id}
                 value={option.id.toString()}
-                className={`flex items-center p-4 border border-gray-300 rounded-full cursor-pointer transition ${
+                className={`flex items-center p-4 border border-gray-300 rounded-full cursor-pointer transition-shadow transform ${
                   selectedOption === option.id.toString()
-                    ? "bg-blue-100 border-blue-400"
-                    : "bg-white"
+                    ? "bg-blue-100 border-blue-400 shadow-lg"
+                    : "bg-white hover:shadow-md"
                 }`}
               >
                 <RadioGroup.Indicator className="mr-4">
                   <div
-                    className={`w-4 h-4 rounded-full ${
+                    className={`w-5 h-5 rounded-full ${
                       selectedOption === option.id.toString()
                         ? "bg-blue-400"
                         : "bg-gray-300"
@@ -138,7 +171,7 @@ const AssessmentPage = () => {
               </RadioGroup.Item>
             ))}
           </RadioGroup.Root>
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-8">
             {currentQuestionIndex > 0 && (
               <button
                 className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200 mr-2"
@@ -170,3 +203,4 @@ const AssessmentPage = () => {
 };
 
 export default AssessmentPage;
+
