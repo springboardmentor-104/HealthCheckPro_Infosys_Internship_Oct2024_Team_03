@@ -32,7 +32,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         checkUserStatusAndRedirect();
-    })
+    }, [])
 
     return (
         <div>Dashboard</div>

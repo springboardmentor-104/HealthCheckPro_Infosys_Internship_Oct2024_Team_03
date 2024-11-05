@@ -44,7 +44,7 @@ const NewUserAssessmentPage = () => {
       console.log({ status });
     } else if(status.isComplete) {
       navigate("/dashboard");
-      console.log({ status });
+      console.log({ status })
     }
 
     getCategories();

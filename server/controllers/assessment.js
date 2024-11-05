@@ -94,7 +94,7 @@ export const submitCatgegoryTest = async (req, res) => {
     if (currentAttempt.assessments.length === 4) {
       currentAttempt.isComplete = true;
       currentAttempt.overallScore =
-        currentAttempt.assessments.reduce((sum, assessment) => sum + assessment.totalScore, 0) / 4;
+        currentAttempt.assessments.reduce((sum, assessment) => sum + assessment.totalScore, 0); // / 4
     }
 
     await currentAttempt.save();
@@ -103,5 +103,52 @@ export const submitCatgegoryTest = async (req, res) => {
       .json({ message: "Category test submitted!", attempt: currentAttempt });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+// Fetch the latest assessment attempts
+export const fetchUserLatestAssessment = async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming userId is attached to the req object
+    const latestAttempts = await UserAssessmentHistory.find({ userId }).sort({ attemptNumber: -1 }).limit(2);
+
+    // Process the latest attempts to exclude the questions array
+    const processedAttempts = latestAttempts.map(attempt => {
+      const processedAssessments = attempt.assessments.map(assessment => {
+        const { questions, ...rest } = assessment._doc; // Exclude questions array and get the rest of the properties
+        return rest; // Return the new assessment object without the questions array
+      });
+      return { ...attempt._doc, assessments: processedAssessments }; // Return the new attempt object with processed assessments
+    });
+
+    const latestCompleteAttempt = processedAttempts.find(attempt => attempt.isComplete);
+    const latestIncompleteAttempt = processedAttempts.find(attempt => !attempt.isComplete);
+
+    if (latestCompleteAttempt || latestIncompleteAttempt) {
+      res.status(200).json({ 
+        latestCompleteAttempt,
+        latestIncompleteAttempt 
+      });
+    } else {
+      res.status(200).json({ message: "User has not submitted any tests!" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// Fetch all assessment attempts
+export const fetchUserAssessmentHistory = async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming userId is attached to the req object
+    const allAttempts = await UserAssessmentHistory.find({ userId }).sort({ attemptNumber: -1 });
+
+    if (allAttempts && allAttempts.length > 0) {
+      res.status(200).json({ allAttempts });
+    } else {
+      res.status(200).json({ message: "User has not submitted any tests!" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
   }
 };

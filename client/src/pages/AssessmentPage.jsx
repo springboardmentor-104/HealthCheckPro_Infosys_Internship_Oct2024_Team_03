@@ -39,6 +39,24 @@ const AssessmentPage = () => {
 
   const currentQuestion = questionsData[currentQuestionIndex];
 
+  const getStatus = async () => {
+    const response = await fetch(
+      `http://localhost:3000/user-assessment/status`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          userid: userId, // 6714f6b7e08a34409125cc0c
+        },
+      }
+    );
+
+    const status = await response.json();
+    console.log({ status });
+
+    
+  };
+
   const handleOptionChange = (value) => {
     setSelectedOption(value);
   };
@@ -92,15 +110,15 @@ const AssessmentPage = () => {
       </div>
       <div className="flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-lg bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm max-w-4xl m-8 w-full">
         {/* Left Section: Graphic */}
-        <div className="w-full md:w-1/3 flex items-center justify-center p-8 scale-125">
+        {/* <div className="w-full md:w-1/3 flex items-center justify-center p-8 scale-125">
           <img
             src="../../health-assessment.png"
             alt="Health Assessment"
             className="rounded-xl w-full h-auto scale-90"
           />
-        </div>
+        </div> */}
         {/* Right Section: Question and Options */}
-        <div className="w-full md:w-2/3 p-8 flex flex-col justify-center bg-gray-50">
+        <div className="w-full md:w-3/3 p-8 flex flex-col justify-center bg-gray-50">
           <h2 className="text-3xl font-semibold mb-4 text-gray-900 text-center md:text-left">
             Assessment
           </h2>
