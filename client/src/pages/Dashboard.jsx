@@ -37,7 +37,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await axios.get('/api/health-scores'); // Replace with your API endpoint
+        const response = await axios.get('/api/health-scores'); // we have to replace with actual API endpoint
         const data = response.data;
 
         const updatedMetrics = [
@@ -69,7 +69,7 @@ const Dashboard = () => {
 
         setMetrics(updatedMetrics);
 
-        // Calculate overall score as an average of the metric values
+        //It Calculates overall score
         const totalScore = updatedMetrics.reduce((acc, metric) => acc + metric.value, 0);
         const averageScore = Math.round(totalScore / updatedMetrics.length);
         setOverallScore(averageScore);
