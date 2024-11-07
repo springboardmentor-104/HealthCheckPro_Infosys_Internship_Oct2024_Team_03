@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BsThreeDotsVertical, BsPerson } from 'react-icons/bs';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import axios from 'axios';
 
+//metricRow for displaying scores
 const MetricRow = ({ icon, title, value, status, color }) => (
   <div className="flex items-center justify-between mb-6 p-4 transition-transform transform hover:scale-105 rounded-lg shadow-md bg-white hover:shadow-lg">
     <div className="flex items-center gap-4">
@@ -17,7 +19,7 @@ const MetricRow = ({ icon, title, value, status, color }) => (
       </div>
     </div>
     <div className="flex items-center gap-4">
-      <span className="font-semibold">{value}%</span>
+      <span className="font-semibold">{value}</span>
       <BsThreeDotsVertical className="text-gray-400 cursor-pointer hover:text-gray-600" />
     </div>
   </div>
@@ -26,55 +28,50 @@ const MetricRow = ({ icon, title, value, status, color }) => (
 const Dashboard = () => {
   const [metrics, setMetrics] = useState([]);
   const [overallScore, setOverallScore] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const user = {
-    firstName: 'Samantha',
-    lastName: 'Smith'
-  };
-
-  const userInitials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
-
+  //function to fetch data from API
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await axios.get('/api/health-scores'); // we have to replace with actual API endpoint
-        const data = response.data;
+        const response = await axios.get('http://localhost:3000/user-assessment/latest-attempt');
+        const { latestCompleteAttempt } = response.data;
 
-        const updatedMetrics = [
-          {
-            title: 'Physical Fitness',
-            value: data.physicalFitness,
-            status: data.physicalFitness >= 80 ? 'Excellent' : 'Good',
-            color: '#3498db'
-          },
-          {
-            title: 'Mental Wellness',
-            value: data.mentalWellness,
-            status: data.mentalWellness >= 70 ? 'Good' : 'Average',
-            color: '#9b59b6'
-          },
-          {
-            title: 'Diet',
-            value: data.diet,
-            status: data.diet >= 80 ? 'Excellent' : 'Fair',
-            color: '#e67e22'
-          },
-          {
-            title: 'Daily Routine',
-            value: data.dailyRoutine,
-            status: data.dailyRoutine >= 50 ? 'Good' : 'Need to Improve',
-            color: '#2ecc71'
-          }
-        ];
+        if (latestCompleteAttempt) {
+          // Map category IDs to titles and colors
+          const categoryTitles = {
+            "6720b4b7138ac4c27924dbf2": "Physical Fitness",
+            "6722653e8aebf1c473d1672b": "Mental Wellness",
+            "67226bc38dec3d17c5368bd2": "Diet",
+            "67226bdf8dec3d17c5368bd5": "Daily Routine"
+          };
 
-        setMetrics(updatedMetrics);
+          const categoryColors = {
+            "6720b4b7138ac4c27924dbf2": "#3498db",
+            "6722653e8aebf1c473d1672b": "#9b59b6",
+            "67226bc38dec3d17c5368bd2": "#e67e22",
+            "67226bdf8dec3d17c5368bd5": "#2ecc71"
+          };
 
-        //It Calculates overall score
-        const totalScore = updatedMetrics.reduce((acc, metric) => acc + metric.value, 0);
-        const averageScore = Math.round(totalScore / updatedMetrics.length);
-        setOverallScore(averageScore);
+          const updatedMetrics = latestCompleteAttempt.assessments.map((assessment) => {
+            const title = categoryTitles[assessment.categoryId] || "Unknown Category";
+            const color = categoryColors[assessment.categoryId] || "#34495e";
+            const status = assessment.totalScore >= 80 ? 'Excellent' : assessment.totalScore >= 50 ? 'Good' : 'Needs Improvement';
+
+            return {
+              title,
+              value: assessment.totalScore,
+              status,
+              color
+            };
+          });
+
+          setMetrics(updatedMetrics);
+          setOverallScore(latestCompleteAttempt.overallScore);
+        }
       } catch (error) {
-        console.error('Error fetching metrics:', error);
+        console.error('Error fetching latest assessment attempt:', error.message);
+        alert('Unable to fetch assessment data. Please check if the server is running.');
       }
     };
 
@@ -84,16 +81,15 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <div className="w-64 flex flex-col fixed h-full"
+      <div className={`fixed h-full w-64 z-20 transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-64'} md:translate-x-0`} 
            style={{
-             background: 'linear-gradient(180deg, #3498db 0%, #2ecc71 100%)'
+             background: 'linear-gradient(180deg, #3498db 0%, #2ecc71 100%)',
+             top: '64px',
+             zIndex: 30
            }}>
         <div className="p-6">
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
-            </div>
-            <div>
-              <h2 className="text-white font-semibold">Health Check Pro</h2>
             </div>
           </div>
           
@@ -110,19 +106,21 @@ const Dashboard = () => {
           </nav>
         </div>
       </div>
-  
-      {/* Main Content and Footer Wrapper */}
-      <div className="flex-1 ml-64 flex flex-col">
+
+      {/* Toggle button for sidebar */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="bg-white p-2 rounded-full shadow-lg"
+        >
+          {isSidebarOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
+        </button>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 md:ml-64 flex flex-col">
         <header className="flex justify-between items-center p-4 bg-white shadow-md">
-          <h1 className="text-xl font-semibold">Dashboard</h1>
-          <div className="flex items-center gap-4">
-            {/* <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-white font-bold">
-              {userInitials}
-            </div> */}
-            {/* <button className="p-2 rounded-lg bg-red-500 text-white hover:bg-red-600">
-              Logout
-            </button> */}
-          </div>
+          <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
         </header>
   
         <main className="p-8 flex-1 overflow-y-auto">
@@ -205,6 +203,6 @@ const Dashboard = () => {
       </div>
     </div>
   );
-};  
+};
 
 export default Dashboard;
