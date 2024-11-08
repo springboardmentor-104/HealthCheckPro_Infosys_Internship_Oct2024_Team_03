@@ -29,6 +29,8 @@ const AssessmentPage = () => {
   // map each question with selected answer
   const [questionAnswers, setQuestionAnswers] = useState({});
 
+  const [attemptNumber, setAttemptNumber] = useState(0);
+
   const [completedSteps, setCompletedSteps] = useState(new Set());
 
   // --------------- functions --------------------------
@@ -68,15 +70,22 @@ const AssessmentPage = () => {
             "Starting new assessment round with all categories:",
             categories
           );
+
+          if(status.isComplete) {
+            setAttemptNumber(status.attemptNumber + 1);
+          }
+
           if (categories.length > 0) {
             await startAssessment(categories[0]._id);
           }
         } else {
+          setCompletedSteps(new Set(status.completedCategories));
           const incompleteCategories = categories.filter(
             (category) => !status.completedCategories.includes(category._id)
           );
           console.log({ incompleteCategories });
           setIncompleteAssessments(incompleteCategories);
+          setAttemptNumber(status.attemptNumber);
           if (incompleteCategories.length > 0) {
             await startAssessment(incompleteCategories[0]._id);
           }
@@ -116,6 +125,15 @@ const AssessmentPage = () => {
     initializeAssessment();
   }, [getCategories, getStatus]);
 
+  const handleCompleteStep = (currentCategory) => { 
+    // Create a new Set based on the current state 
+    const updatedCompletedSteps = new Set(completedSteps); 
+    // Add the current category to the new set 
+    updatedCompletedSteps.add(currentCategory); 
+    // Update the state with the new set 
+    setCompletedSteps(updatedCompletedSteps);
+  }
+
   const submitAssessment = async () => {
     try {
       const response = await fetch(
@@ -140,6 +158,7 @@ const AssessmentPage = () => {
       console.log({ submitStatus });
       if (response.ok) {
         console.log("Assessment submitted successfully.");
+        handleCompleteStep(currentCategory);
         moveToNextIncompleteAssessment();
       } else {
         console.error("Error submitting assessment.");
@@ -221,6 +240,7 @@ const AssessmentPage = () => {
             categories={assessmentCategories}
             completedSteps={completedSteps}
             onCategoryClick={handleCategoryClick}
+            attemptNumber={attemptNumber}
           />
         </div>
         <div className="flex-1 max-w-2xl">
@@ -288,7 +308,7 @@ const AssessmentPage = () => {
                     className={`w-1/3 ${
                       currentQuestionIndex < currentCategoryQuestions.length - 1
                         ? "bg-blue-600 hover:bg-blue-700"
-                        : "bg-green-500 hover:bg-green-600"
+                        : "bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white hover:opacity-90 "
                     } text-white py-2 px-4 rounded-full text-sm font-semibold transition duration-300 transform hover:scale-105`}
                     onClick={handleNext}
                   >
