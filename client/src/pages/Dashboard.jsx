@@ -28,7 +28,7 @@ const MetricRow = ({ icon, title, value, status, color }) => (
 
 const Dashboard = () => {
   // const user = useSelector(state => state.user);
-  const userId = "6714f6b7e08a34409125cc0c"; // user.user._id;
+  const userId = "671a2da9af9bcc1085287531"; // user.user._id;
   const [metrics, setMetrics] = useState([]);
   const [overallScore, setOverallScore] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
