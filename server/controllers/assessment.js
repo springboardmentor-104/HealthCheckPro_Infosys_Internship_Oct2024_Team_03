@@ -52,18 +52,23 @@ export const submitCatgegoryTest = async (req, res) => {
   try {
     const userId = req.user._id;
     const { categoryId, questions } = req.body;
+    console.log({ categoryId, questions });
 
     // caculate total score of user in specific category assessment
     let totalScore = 0;
     for (const question of questions) {
       const questionDoc = await Question.findById(question.questionId);
-      const selectedOption = questionDoc.options.find(option => option.optionId.equals(question.selectedOptionId));
+      console.log({questionDoc}, "\noptions: ", questionDoc.options)
+      const selectedOption = questionDoc.options.find(option => option._id.equals(question.selectedOptionId));
+      console.log({selectedOption});
       totalScore += selectedOption.score;
     }
 
     const lastAttempt = await UserAssessmentHistory.findOne({ userId }).sort({
       attemptNumber: -1,
     });
+
+    console.log({totalScore});
 
     let currentAttempt;
     if (!lastAttempt || lastAttempt.isComplete) {
@@ -102,6 +107,7 @@ export const submitCatgegoryTest = async (req, res) => {
       .status(200)
       .json({ message: "Category test submitted!", attempt: currentAttempt });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server Error", error });
   }
 };

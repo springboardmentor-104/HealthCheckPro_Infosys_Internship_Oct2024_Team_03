@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Stepper from "../components/Stepper";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { useSelector } from "react-redux";
@@ -163,16 +163,26 @@ const AssessmentPage = () => {
     }
   };
 
-  const handleOptionChange = (value) => {
-    console.log("handleoptionchage:", value);
+  const handleOptionChange = (id) => {
     const currentQuestionId =
       currentCategoryQuestions[currentQuestionIndex]._id;
+    // const selectedOption = currentCategoryQuestions[
+    //   currentQuestionIndex
+    // ].options.find((option) => option._id === id);
+
     setQuestionAnswers((prev) => ({
       ...prev,
-      [currentQuestionId]: value,
+      // [currentQuestionId]: {
+      //   id: selectedOption._id,
+      //   text: selectedOption.optionText,
+      // },
+      [currentQuestionId]: id,
     }));
-    setSelectedOption(value);
+
+    setSelectedOption(id);
+    console.log({questionAnswers});
   };
+
 
   const handleNext = () => {
     if (currentQuestionIndex < currentCategoryQuestions.length - 1) {
@@ -221,7 +231,7 @@ const AssessmentPage = () => {
                   {
                     assessmentCategories.find(
                       (cat) => cat._id === currentCategory
-                    )?.name
+                    )?.categoryName
                   }{" "}
                   Assessment
                 </h2>
@@ -234,20 +244,16 @@ const AssessmentPage = () => {
                 </h3>
                 <RadioGroup.Root
                   className="flex flex-col space-y-3 w-full sm:w-3/4"
-                  value={
-                    questionAnswers[
-                      currentCategoryQuestions[currentQuestionIndex]?._id
-                    ] || null
-                  }
+                  value={selectedOption}
                   onValueChange={handleOptionChange}
                 >
                   {currentCategoryQuestions[currentQuestionIndex]?.options.map(
                     (option) => (
                       <RadioGroup.Item
                         key={option._id}
-                        value={option.optionText}
+                        value={option._id}
                         className={`flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-105 ${
-                          selectedOption === option.optionText
+                          selectedOption === option._id
                             ? "bg-blue-100 border-blue-400"
                             : "bg-white"
                         }`}
@@ -255,7 +261,7 @@ const AssessmentPage = () => {
                         <RadioGroup.Indicator className="mr-3">
                           <div
                             className={`w-4 h-4 rounded-full ${
-                              selectedOption === option.optionText
+                              selectedOption === option._id
                                 ? "bg-blue-400"
                                 : "bg-gray-300"
                             }`}
@@ -268,6 +274,7 @@ const AssessmentPage = () => {
                     )
                   )}
                 </RadioGroup.Root>
+
                 <div className="flex justify-between mt-8 w-full sm:w-3/4">
                   {currentQuestionIndex > 0 && (
                     <button
