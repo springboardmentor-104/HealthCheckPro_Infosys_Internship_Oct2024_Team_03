@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsThreeDotsVertical, BsPerson } from 'react-icons/bs';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import axios from 'axios';
+import { useSelector } from "react-redux"
 
 //metricRow for displaying scores
 const MetricRow = ({ icon, title, value, status, color }) => (
@@ -26,6 +27,8 @@ const MetricRow = ({ icon, title, value, status, color }) => (
 );
 
 const Dashboard = () => {
+  // const user = useSelector(state => state.user);
+  const userId = "6714f6b7e08a34409125cc0c"; // user.user._id;
   const [metrics, setMetrics] = useState([]);
   const [overallScore, setOverallScore] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,7 +37,14 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/user-assessment/latest-attempt');
+        const response = await axios.get(
+          "http://localhost:3000/user-assessment/latest-attempt",
+          {
+            headers: {
+              userid: userId,
+            },
+          }
+        );
         const { latestCompleteAttempt } = response.data;
 
         if (latestCompleteAttempt) {
