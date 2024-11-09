@@ -18,30 +18,42 @@ const Navbar = () => {
           </h1>
         </div>
         <div className="hidden md:flex justify-between space-x-5">
-          <p className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
-            Why HealthCheckPro?
-          </p>
-          <p className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
-            About
-          </p>
+          <Link to="/" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+            Home
+          </Link>
+          <Link to="/articles" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+            Articles
+          </Link>
+          <Link to="/assessment" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+            Assessment
+          </Link>
+          <Link to="/dashboard" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+            Dashboard
+          </Link>
         </div>
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
             className="text-blue-500 hover:text-green-500 focus:outline-none mb-0"
           >
-            {isOpen? "✕": "☰" }
+            {isOpen ? "✕" : "☰"}
           </button>
         </div>
       </div>
       <Collapsible.Root open={isOpen} onOpenChange={setIsOpen}>
         <Collapsible.Content className="md:hidden flex flex-col items-center space-y-2 mt-2">
-          <p className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
-            Why HealthCheckPro?
-          </p>
-          <p className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
-            About
-          </p>
+          <Link to="/" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+            Home
+          </Link>
+          <Link to="/articles" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+            Articles
+          </Link>
+          <Link to="/assessment" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+            Assessment
+          </Link>
+          <Link to="/dashboard" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+            Dashboard
+          </Link>
         </Collapsible.Content>
       </Collapsible.Root>
     </nav>
