@@ -1,5 +1,5 @@
 import './App.css'
-import Navbar2 from './components/Navbar2';
+import Navbar from './components/Navbar';
 import { Routes, Route } from 'react-router-dom';
 import HeroSection from './components/HeroSection'
 import ArticleSection from './components/ArticleSection'
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <>
-    <Navbar2/>
+    <Navbar/>
     <Routes>
         <Route path="/articles" element={<Articles />} />
         <Route path="/assessment" element={<Assessment />} />
