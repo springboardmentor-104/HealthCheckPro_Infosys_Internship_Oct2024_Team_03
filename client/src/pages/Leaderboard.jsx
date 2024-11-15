@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaCrown, FaMedal, FaStar } from 'react-icons/fa';
 
 // Sample static data
 const leaderboardData = [
@@ -30,12 +31,25 @@ function Leaderboard() {
       {/* Header */}
       <div style={styles.header}>
         <h1>Leaderboard</h1>
-        <button style={styles.backButton} onClick={goBack}>Back</button>
+        <button
+          style={styles.backButton}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = '#0056b3')}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = '#007bff')}
+          onClick={goBack}
+        >
+          Back
+        </button>
       </div>
 
       {/* Dropdown for Score Selection */}
       <div style={styles.dropdownContainer}>
-        <select value={selectedScore} onChange={handleScoreChange} style={styles.dropdown}>
+        <select
+          value={selectedScore}
+          onChange={handleScoreChange}
+          style={styles.dropdown}
+          onMouseEnter={(e) => (e.target.style.borderColor = '#007bff')}
+          onMouseLeave={(e) => (e.target.style.borderColor = '#ccc')}
+        >
           <option value="Overall Score">Overall Score</option>
           <option value="Physical">Physical</option>
           <option value="Mental">Mental</option>
@@ -47,14 +61,16 @@ function Leaderboard() {
       {/* Top 3 Winners */}
       <div style={styles.topThreeContainer}>
         {leaderboardData.slice(0, 3).map((user, index) => (
-          <div 
-            key={user.rank} 
+          <div
+            key={user.rank}
             style={{
               ...styles.topThreeCard,
               backgroundColor: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : '#CD7F32',
             }}
           >
-            <div style={styles.rankTag}>{index === 0 ? 'FIRST' : index === 1 ? 'SECOND' : 'THIRD'}</div>
+            <div style={styles.rankTag}>
+              {index === 0 ? <FaCrown size={32} /> : index === 1 ? <FaMedal size={32} /> : <FaStar size={32} />}
+            </div>
             <div style={styles.userIcon}>👤</div>
             <h3>{user.name}</h3>
             <p>Score: {user.score}</p>
@@ -63,21 +79,44 @@ function Leaderboard() {
       </div>
 
       {/* Other Rankings */}
-      <div style={styles.rankingsList}>
-        <div style={styles.rankingsTable}>
-          {leaderboardData.slice(3, 10).map((user) => (
-            <div key={user.rank} style={styles.row}>
-              <span style={styles.cell}>{user.rank}</span>
-              <span style={styles.cell}>{user.name}</span>
-              <span style={styles.cell}>{user.score}</span>
+      <div style={styles.otherRankingsContainer}>
+        {leaderboardData.slice(3, 10).map((user) => (
+          <div
+            key={user.rank}
+            style={styles.otherRankingCard}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0px 8px 16px rgba(0, 0, 0, 0.2)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            <span style={styles.rankNumber}>{user.rank}</span>
+            <div style={styles.details}>
+              <h4 style={styles.name}>{user.name}</h4>
+              <p style={styles.score}>Score: {user.score}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* More Button */}
       <div style={styles.moreButtonContainer}>
-        <button style={styles.moreButton}>More</button>
+        <button
+          style={styles.moreButton}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#0056b3';
+            e.target.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = '#007bff';
+            e.target.style.transform = 'scale(1)';
+          }}
+        >
+          More
+        </button>
       </div>
     </div>
   );
@@ -85,10 +124,10 @@ function Leaderboard() {
 
 export default Leaderboard;
 
-// Inline styling 
+// Inline styling
 const styles = {
   container: {
-    paddingTop: '80px', // Adjust to match navbar height
+    paddingTop: '50px',
     paddingLeft: '20px',
     paddingRight: '20px',
     fontFamily: 'Arial, sans-serif',
@@ -107,6 +146,7 @@ const styles = {
     color: '#fff',
     border: 'none',
     borderRadius: '5px',
+    transition: 'background-color 0.3s, transform 0.3s',
   },
   dropdownContainer: {
     display: 'flex',
@@ -120,6 +160,7 @@ const styles = {
     border: '1px solid #ccc',
     outline: 'none',
     cursor: 'pointer',
+    transition: 'border-color 0.3s',
   },
   topThreeContainer: {
     display: 'flex',
@@ -145,22 +186,40 @@ const styles = {
     fontSize: '24px',
     marginBottom: '8px',
   },
-  rankingsList: {
-    marginTop: '20px',
-  },
-  rankingsTable: {
+  otherRankingsContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr 3fr 2fr',
-    gap: '10px',
-    textAlign: 'left',
-    marginBottom: '20px',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '15px',
+    margin: '20px 0',
   },
-  row: {
-    display: 'contents',
+  otherRankingCard: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '10px',
+    padding: '15px',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    cursor: 'pointer',
   },
-  cell: {
-    padding: '8px 0',
-    borderBottom: '1px solid #eee',
+  rankNumber: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#007bff',
+    marginRight: '15px',
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  name: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    margin: 0,
+  },
+  score: {
+    fontSize: '14px',
+    color: '#666',
   },
   moreButtonContainer: {
     textAlign: 'center',
@@ -173,6 +232,8 @@ const styles = {
     color: '#fff',
     borderRadius: '5px',
     border: 'none',
-    transition: 'background-color 0.3s, transform 0.3s',
-},
+    transition: 'background-color 0.3s, transform 0.3s',
+  },
 };
+
+  
