@@ -7,12 +7,14 @@ import Layout from "./Layout";
 import NewUserAssessmentPage from "./pages/NewUserAssessmentPage";
 import AssessmentPage from "./pages/AssessmentPage";
 import Dashboard from "./pages/Dashboard";
+import Articles from "./components/ArticleSection";
 
 const routes = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<Homepage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/reset-password" element={<ResetPassword />} />
@@ -20,6 +22,7 @@ const routes = () => {
           <Route path="/new-user-assessment" element={<NewUserAssessmentPage />} />
           <Route path="/assessment" element={<AssessmentPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/articles" element={<Articles />} />
         </Route>
       </Routes>
     </Router>
