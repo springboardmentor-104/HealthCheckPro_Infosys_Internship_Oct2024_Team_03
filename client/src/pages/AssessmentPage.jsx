@@ -7,7 +7,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 
 const AssessmentPage = () => {
   const navigate = useNavigate();
-  const userId = "671a2da9af9bcc1085287531"; //user.user._id;
+  const user = useSelector((state) => state.user);
+  const userId = user.user._id;
+  // const userId = "671a2da9af9bcc1085287531"; //user.user._id;
 
   // store all fetched categories
   const [assessmentCategories, setAssessmentCategories] = useState([]);

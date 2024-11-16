@@ -1,6 +1,7 @@
 import UserAssessmentHistory from "../models/UserAssessmentHistory.js";
 import Category from "../models/Category.js";
 import Question from "../models/Question.js";
+import { updateLeaderBoard } from "./leaderboard.js";
 
 export const checkUserAssessmentStatus = async (req, res) => {
     try {
@@ -50,7 +51,9 @@ export const startNewRound = async (req, res) => {
 
 export const submitCatgegoryTest = async (req, res) => {
   try {
+    console.log("entered submit test");
     const userId = req.user._id;
+    const username = req.user.username;
     const { categoryId, questions } = req.body;
     console.log({ categoryId, questions });
 
@@ -106,6 +109,14 @@ export const submitCatgegoryTest = async (req, res) => {
     res
       .status(200)
       .json({ message: "Category test submitted!", attempt: currentAttempt });
+
+    console.log("currentatteptincom: ", currentAttempt.isComplete);
+
+    if (currentAttempt.isComplete) {
+      const attemptNumber = lastAttempt ? lastAttempt.attemptNumber : 0;
+      console.log({attemptNumber});
+      updateLeaderBoard(userId, username, attemptNumber);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error", error });
