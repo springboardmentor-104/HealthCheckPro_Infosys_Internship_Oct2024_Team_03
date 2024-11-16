@@ -8,6 +8,7 @@ import NewUserAssessmentPage from "./pages/NewUserAssessmentPage";
 import AssessmentPage from "./pages/AssessmentPage";
 import Dashboard from "./pages/Dashboard";
 import Articles from "./components/ArticleSection";
+import Leaderboard from "./pages/Leaderboard"
 
 const routes = () => {
   return (
@@ -23,6 +24,7 @@ const routes = () => {
           <Route path="/assessment" element={<AssessmentPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/articles" element={<Articles />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
       </Routes>
     </Router>
