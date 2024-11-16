@@ -12,7 +12,7 @@ const InputSection = () => {
     };
 
     return (
-        <section className="input-section py-10 bg-gray-100">
+        <section className="input-section py-10 ">
             <div className="container mx-auto">
                 <h2 className="text-2xl font-bold mb-4">Your Health Queries</h2>
                 <form onSubmit={handleSubmit} className="flex">

@@ -19,12 +19,12 @@ export const isAdmin = async (req, res, next) => {
 export const isAuthenticated = async (req, res, next) => {
   try {
     const userId = req.headers.userid;
-    console.log({userId});
+    // console.log({userId});
     const user = await User.findById(userId);
-    console.log(`userId and user: ${userId}, ${user}`);
+    // console.log(`userId and user: ${userId}, ${user}`);
 
     if (user) {
-      console.log(`${userId} authenticated`)
+      // console.log(`${userId} authenticated`)
       req.user = user;
       next();
     } else {

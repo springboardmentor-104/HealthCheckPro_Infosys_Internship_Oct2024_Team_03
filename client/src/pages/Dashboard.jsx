@@ -28,17 +28,44 @@ const MetricRow = ({ icon, title, value, status, color }) => (
 );
 
 const Dashboard = () => {
-    // const user = useSelector(state => state.user);
-    const userId = "6714f6b7e08a34409125cc0c";
+    const user = useSelector(state => state.user);
+    const userId = user.user._id;
+    console.log({userId}, "dash");
     const [metrics, setMetrics] = useState([]);
     const [overallScore, setOverallScore] = useState(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [latestCompleteAttempt, setLatestCompleteAttempt] = useState(null);
+    const [anyIncompleteAttempt, setAnyIncompleteAttempt] = useState(null);
 
     const navigate = useNavigate(); // Used for navigation between pages
 
+    const checkUserStatusAndRedirect = async () => {
+      const userStatus = await fetch(
+        `http://localhost:3000/user-assessment/status`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            userid: userId,
+          },
+        }
+      );
+      console.log({ userStatus });
+
+      const status = await userStatus.json();
+      console.log({ status });
+
+      if (
+        status.attemptNumber === 0 ||
+        (!status.isComplete && status.attemptNumber === 1)
+      ) {
+        navigate("/new-user-assessment");
+      }
+    };
+
     //function to fetch data from API
     useEffect(() => {
+        checkUserStatusAndRedirect();
         const fetchMetrics = async () => {
             try {
                 const response = await axios.get(
@@ -47,7 +74,13 @@ const Dashboard = () => {
                         headers: { userid: userId }
                     }
                 );
-                const { latestCompleteAttempt } = response.data;
+                const { latestCompleteAttempt, latestIncompleteAttempt } = response.data;
+                console.log("res: ", response.data);
+                console.log({latestIncompleteAttempt})
+
+                if(latestIncompleteAttempt) {
+                    setAnyIncompleteAttempt(true);
+                }
 
                 if (latestCompleteAttempt) {
                     // Map category IDs to titles and colors
@@ -89,11 +122,7 @@ const Dashboard = () => {
     }, []);
 
     const handleButtonClick = () => {
-        if (latestCompleteAttempt) {
-            navigate('/NewUserAssessmentPage'); //for navigation to NewUserAssessmentPage
-        } else {
-            navigate('/AssessmentPage'); //for navigation to AssessmentPage
-        }
+        navigate('/assessment'); //for navigation to AssessmentPage
     };
 
     return (
@@ -180,9 +209,9 @@ const Dashboard = () => {
                         <div className="flex justify-between">
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                    {latestCompleteAttempt
-                                        ? "You can Re-Take Assessment to update your score"
-                                        : "Complete the remaining tests to get your score!"}
+                                    {anyIncompleteAttempt
+                                        ? "Complete the remaining tests to get your score!"
+                                        : "You can Re-Take Assessment to update your score"}
                                 </h3>
                                 <p className="text-gray-500 text-sm max-w-md">
                                     Discover your health insights and unlock a better you with Health Check Pro!

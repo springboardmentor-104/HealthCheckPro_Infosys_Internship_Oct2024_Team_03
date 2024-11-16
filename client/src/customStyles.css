@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: linear-gradient(to right, #48c78e, #4299e1); /* Gradient background from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient background from green to blue */
 }
 
 html, body {
@@ -29,7 +29,7 @@ html, body {
 .navbar .brand {
     font-weight: bold;
     font-size: 1.5rem;
-    background: linear-gradient(to right, #48c78e, #4299e1); /* Gradient from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
     -webkit-background-clip: text; /* Clip the gradient to the text */
     background-clip: text; /* For non-webkit browsers */
     color: transparent; /* Makes the text color transparent, allowing the gradient to show */
@@ -65,7 +65,7 @@ html, body {
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(to right, #48c78e, #4299e1);  /* Gradient from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1);  Gradient from green to blue */
     padding-top: 10rem;  /* Increased top padding */
     padding-bottom: 3rem;  /* Increased bottom padding */
     padding-left: 2rem;
@@ -107,7 +107,7 @@ html, body {
 
 /* Assessment Section */
 .assessment-section {
-    background: linear-gradient(to right, #48c78e, #4299e1); /* Gradient from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
     padding: 6rem 2rem;
     text-align: center;
     display: flex;
@@ -190,7 +190,7 @@ html, body {
 /* Articles Section */
 .articles-section {
     padding: 5rem 2rem;
-    background: linear-gradient(to right, #48c78e, #4299e1); /* Gradient from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
     text-align: center;
 }
 
@@ -234,7 +234,7 @@ html, body {
 /* Dashboard Section */
 .dashboard-section {
     padding: 5rem 2rem;
-    background: linear-gradient(to right, #48c78e, #4299e1); /* Gradient from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
     text-align: center;
 }
 
@@ -257,7 +257,7 @@ html, body {
 
 /* Profile Section */
 .profile-section {
-    background: linear-gradient(to right, #48c78e, #4299e1);
+    /* background: linear-gradient(to right, #48c78e, #4299e1); */
     padding: 5rem 2rem;
 }
 
@@ -277,7 +277,7 @@ html, body {
 
 /* Input Section */
 .input-section {
-    background: linear-gradient(to right, #48c78e, #4299e1); /* Gradient from green to blue */
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
     padding: 6rem 2rem;
     color: white;
     text-align: center;
@@ -319,7 +319,7 @@ html, body {
 
 /* Quote Section */
 .quote-section {
-    background: linear-gradient(to right, #48c78e, #4299e1);
+    /* background: linear-gradient(to right, #48c78e, #4299e1); */
     padding: 6rem 2rem;
     color: white;
     text-align: center;
