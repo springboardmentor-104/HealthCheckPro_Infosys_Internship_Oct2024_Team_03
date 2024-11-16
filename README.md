@@ -17,7 +17,7 @@ cd HealthCheckPro_Infosys_Internship_Oct2024_Team_03/
 ```
 
 #### Install Dependencies
-Remember to change the branch first, from "main" to "milestone-3"
+Remember to change the branch first, from "main" to "Milestone3-Integration"
 
 - For client
     ```
@@ -62,7 +62,7 @@ Note: If you only want to test the website then use first step only i.e 'For dem
         - On '/signin' page use following credentials. It will give you guest user's access without registration.
         
         ```
-        email: guest@demo.com
+        email: guest123@demo.com
         password: guest@123
         ```
 
