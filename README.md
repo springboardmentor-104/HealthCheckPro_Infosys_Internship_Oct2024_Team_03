@@ -54,7 +54,7 @@ Note: If you only want to test the website then use first step only i.e 'For dem
 
         - In .env file add above string as,
             ```
-            MONGO_URI="mongodb+srv://guest:0W3LubzJfT7BBas3@cluster0.8d8rq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            MONGODB_URI="mongodb+srv://guest:0W3LubzJfT7BBas3@cluster0.8d8rq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
             ```
 
     - **Guest user credentials**
