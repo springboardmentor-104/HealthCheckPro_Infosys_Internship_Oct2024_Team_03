@@ -51,27 +51,27 @@ export const startNewRound = async (req, res) => {
 
 export const submitCatgegoryTest = async (req, res) => {
   try {
-    console.log("entered submit test");
     const userId = req.user._id;
     const username = req.user.username;
     const { categoryId, questions } = req.body;
-    console.log({ categoryId, questions });
 
     // caculate total score of user in specific category assessment
     let totalScore = 0;
     for (const question of questions) {
       const questionDoc = await Question.findById(question.questionId);
-      console.log({questionDoc}, "\noptions: ", questionDoc.options)
       const selectedOption = questionDoc.options.find(option => option._id.equals(question.selectedOptionId));
-      console.log({selectedOption});
       totalScore += selectedOption.score;
     }
+
+    // find totalScore percent
+    const categoryTotalScore = await Category.findOne({_id: categoryId});
+    console.log(categoryTotalScore);
+    totalScore = (totalScore / categoryTotalScore.totalScore) * 100;
+    totalScore = parseFloat(totalScore.toFixed(2));
 
     const lastAttempt = await UserAssessmentHistory.findOne({ userId }).sort({
       attemptNumber: -1,
     });
-
-    console.log({totalScore});
 
     let currentAttempt;
     if (!lastAttempt || lastAttempt.isComplete) {
@@ -99,10 +99,20 @@ export const submitCatgegoryTest = async (req, res) => {
       currentAttempt.assessments.push({ categoryId, questions, totalScore });
     }
 
-    if (currentAttempt.assessments.length === 4) {
+    const allCategories = await Category.find();
+    const totalNumberOfCategories = allCategories.length;
+    console.log({totalNumberOfCategories})
+
+    if (currentAttempt.assessments.length === totalNumberOfCategories) {
       currentAttempt.isComplete = true;
+      // currentAttempt.overallScore =
+      //   currentAttempt.assessments.reduce((sum, assessment) => sum + assessment.totalScore, 0);
+
+      // find percentage of overall scores percentage
       currentAttempt.overallScore =
-        currentAttempt.assessments.reduce((sum, assessment) => sum + assessment.totalScore, 0); // / 4
+        currentAttempt.assessments.reduce((sum, assessment) => sum + assessment.totalScore, 0) / totalNumberOfCategories;
+      
+      currentAttempt.overallScore = parseFloat(currentAttempt.overallScore.toFixed(2));
     }
 
     await currentAttempt.save();
@@ -110,15 +120,11 @@ export const submitCatgegoryTest = async (req, res) => {
       .status(200)
       .json({ message: "Category test submitted!", attempt: currentAttempt });
 
-    console.log("currentatteptincom: ", currentAttempt.isComplete);
-
     if (currentAttempt.isComplete) {
       const attemptNumber = lastAttempt ? lastAttempt.attemptNumber : 0;
-      console.log({attemptNumber});
       updateLeaderBoard(userId, username, attemptNumber);
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Server Error", error });
   }
 };
@@ -161,7 +167,18 @@ export const fetchUserAssessmentHistory = async (req, res) => {
     const allAttempts = await UserAssessmentHistory.find({ userId }).sort({ attemptNumber: -1 });
 
     if (allAttempts && allAttempts.length > 0) {
-      res.status(200).json({ allAttempts });
+      const shortInfo = allAttempts.map(attempt => {
+        return ({
+          _id: attempt._id, 
+          userId: attempt.userId, 
+          attemptNumber: attempt.attemptNumber,
+          overallScore: attempt.overallScore,
+          isComplete: attempt.isComplete,
+          date: attempt.date
+        })
+      });
+
+      res.status(200).json( {attemptHistory: shortInfo} );
     } else {
       res.status(200).json({ message: "User has not submitted any tests!" });
     }
@@ -169,3 +186,16 @@ export const fetchUserAssessmentHistory = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+export const getAssessmentById = async(req, res) => {
+  try {
+    const userId = req.user._id;
+    const assessmentId = req.params.assessmentId;
+
+    const assessment = await UserAssessmentHistory.findOne({ _id: assessmentId });
+    res.status(200).json({assessment});
+
+  } catch(error) {
+    res.status(500).json({ message: "Server Error", error });
+  }
+}

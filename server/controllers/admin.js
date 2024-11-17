@@ -8,6 +8,7 @@ export const addCategory = async (req, res) => {
     const category = new Category({
       categoryName,
       description,
+      totalScore: 0
     });
 
     await category.save();
@@ -23,6 +24,12 @@ export const addCategory = async (req, res) => {
 export const addQuestion = async (req, res) => {
   const { categoryId, questionText, options } = req.body;
 
+  let bestOptionScore = 0;
+  options.forEach(option => {
+    if(option.score > bestOptionScore)
+      bestOptionScore = option.score
+  });
+
   try {
     const question = new Question({
       categoryId,
@@ -33,6 +40,17 @@ export const addQuestion = async (req, res) => {
     await question.save();
 
     res.status(201).json({ message: "Question added successfully!" });
+
+    const category = await Category.findOneAndUpdate(
+      { _id: categoryId },
+      { $inc: { totalScore: bestOptionScore }},
+      { new: true }
+    );
+
+    console.log({category});
+
+    if (!category) 
+      return res.status(404).json({ message: "Category not found!" });
   } catch (error) {
     res
       .status(500)

@@ -11,6 +11,7 @@ const CategorySchema = new mongoose.Schema(
     },
     totalScore: {
       type: Number,
+      default: 0
     },
   },
   { timestamps: true }
