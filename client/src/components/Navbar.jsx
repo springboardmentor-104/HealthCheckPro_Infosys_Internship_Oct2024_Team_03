@@ -78,6 +78,16 @@ const Navbar = () => {
               >
                 Dashboard
               </Link>
+
+              {/* Temporary adding report in navbar ... remove it */}
+              <Link
+                to="/report"
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+                  location.pathname === "/report" ? "font-extrabold" : ""
+                }`}
+              >
+                Report
+              </Link>
               <Link
                 to={location.pathname === "/" ? "/" : "/signin"}
                 onClick={logout}

@@ -7,8 +7,8 @@ import Layout from "./Layout";
 import NewUserAssessmentPage from "./pages/NewUserAssessmentPage";
 import AssessmentPage from "./pages/AssessmentPage";
 import Dashboard from "./pages/Dashboard";
-import Articles from "./components/ArticleSection";
 import Leaderboard from "./pages/Leaderboard"
+import Report from "./pages/Report"
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const routes = () => {
@@ -47,6 +47,12 @@ const routes = () => {
           <Route path="/leaderboard" element={
             <ProtectedRoute>
               <Leaderboard />
+            </ProtectedRoute>
+            } 
+          />
+          <Route path="/report" element={
+            <ProtectedRoute>
+              <Report />
             </ProtectedRoute>
             } 
           />
