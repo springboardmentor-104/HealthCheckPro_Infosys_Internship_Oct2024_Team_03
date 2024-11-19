@@ -2,31 +2,42 @@ import React from 'react';
 import '../customStyles.css';  // Import customStyles.css from the src folder
 
 const articles = [
-    {
-        title: "Understanding Nutrition: A Comprehensive Guide",
-        description: "Learn the basics of nutrition and how it affects your health.",
-        link: "#",
-    },
-    {
-        title: "The Importance of Regular Exercise",
-        description: "Discover the benefits of staying active and how to incorporate exercise into your daily routine.",
-        link: "#",
-    },
-    {
-        title: "Mental Health Awareness: Breaking the Stigma",
-        description: "Explore the importance of mental health and ways to support yourself and others.",
-        link: "#",
-    },
-    {
-        title: "Healthy Eating Habits for a Better Life",
-        description: "Tips and tricks for developing healthy eating habits that last.",
-        link: "#",
-    },
-    {
-        title: "Sleep: The Key to a Healthy Lifestyle",
-        description: "Understand the importance of sleep and how to improve your sleep quality.",
-        link: "#",
-    },
+  {
+    title: "Understanding Nutrition: A Comprehensive Guide",
+    description:
+      "Learn the basics of nutrition and how it affects your health.",
+    link: "#",
+  },
+  {
+    title: "The Importance of Regular Exercise",
+    description:
+      "Discover the benefits of staying active and how to incorporate exercise into your daily routine.",
+    link: "#",
+  },
+  {
+    title: "Mental Health Awareness: Breaking the Stigma",
+    description:
+      "Explore the importance of mental health and ways to support yourself and others.",
+    link: "#",
+  },
+  {
+    title: "Healthy Eating Habits for a Better Life",
+    description:
+      "Tips and tricks for developing healthy eating habits that last.",
+    link: "#",
+  },
+  {
+    title: "Sleep: The Key to a Healthy Lifestyle",
+    description:
+      "Understand the importance of sleep and how to improve your sleep quality.",
+    link: "#",
+  },
+  {
+    title: "Mental Health Awareness: Breaking the Stigma",
+    description:
+      "Explore the importance of mental health and ways to support yourself and others.",
+    link: "#",
+  }
 ];
 
 const ArticlesSection = () => {

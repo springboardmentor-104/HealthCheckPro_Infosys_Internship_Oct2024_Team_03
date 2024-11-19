@@ -27,14 +27,14 @@ const QuoteSection = () => {
     }, [quoteIndex]);
 
     return (
-        <section className="quote-section py-10">
-            <div className="container mx-auto text-center">
-                <h2 className="text-2xl font-bold mb-4">Quote of the Day</h2>
-                <blockquote className="italic text-gray-600">
-                    {currentQuote}
-                </blockquote>
-            </div>
-        </section>
+      <section className="quote-section py-10">
+        <div className="container mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-4">Quote of the Day</h2>
+          <blockquote className="italic text-gray-600">
+            {currentQuote}
+          </blockquote>
+        </div>
+      </section>
     );
 };
 

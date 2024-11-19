@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../features/user/userSlice";
@@ -7,7 +7,8 @@ import { clearUser } from "../features/user/userSlice";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+  const location = useLocation();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -16,8 +17,13 @@ const Navbar = () => {
   const logout = () => {
     localStorage.removeItem("token");
     dispatch(clearUser());
+    setIsOpen(false);
     console.log("Logged out!");
   };
+
+  useEffect(() => {
+    console.log("currentpath: ", location.pathname);
+  }, [location])
 
   return (
     <nav className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-md shadow-md p-4 fixed top-0 w-full z-10">
@@ -28,26 +34,59 @@ const Navbar = () => {
           </h1>
         </div>
         <div className="hidden md:flex justify-between space-x-5">
-          <Link to="/" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+          <Link
+            to="/"
+            className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+              location.pathname === "/" ? "font-extrabold" : ""
+            }`}
+          >
             Home
           </Link>
-          <Link to="/articles" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
-            Articles
-          </Link>
-          <Link to="/assessment" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
-            Assessment
-          </Link>
-          <Link to="/dashboard" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
-            Dashboard
-          </Link>
-          {
-            isAuthenticated && (
-              <Link to="/signin" onClick={logout} className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+          {!isAuthenticated && (
+            <Link
+              to="/signin"
+              className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+                location.pathname === "/signin" ? "font-extrabold" : ""
+              }`}
+            >
+              {location.pathname === "/signin" ? "" : "Sign In"}
+            </Link>
+          )}
+          {isAuthenticated && (
+            <>
+              <Link
+                to="/assessment"
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+                  location.pathname === "/assessment" ? "font-extrabold" : ""
+                }`}
+              >
+                Assessment
+              </Link>
+              <Link
+                to="/leaderboard"
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+                  location.pathname === "/leaderboard" ? "font-extrabold" : ""
+                }`}
+              >
+                Leaderboard
+              </Link>
+              <Link
+                to="/dashboard"
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+                  location.pathname === "/dashboard" ? "font-extrabold" : ""
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to={location.pathname === "/" ? "/" : "/signin"}
+                onClick={logout}
+                className="hover:cursor-pointer text-red-400 hover:text-red-500 font-medium"
+              >
                 Logout
               </Link>
-            )
-          }
-          
+            </>
+          )}
         </div>
         <div className="md:hidden">
           <button
@@ -60,25 +99,58 @@ const Navbar = () => {
       </div>
       <Collapsible.Root open={isOpen} onOpenChange={setIsOpen}>
         <Collapsible.Content className="md:hidden flex flex-col items-center space-y-2 mt-2">
-          <Link to="/" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+          <Link
+            to="/"
+            onClick={() => setIsOpen(false)}
+            className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+              location.pathname === "/" ? "font-extrabold" : ""
+            }`}
+          >
             Home
           </Link>
-          <Link to="/articles" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
-            Articles
-          </Link>
-          <Link to="/assessment" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
-            Assessment
-          </Link>
-          <Link to="/dashboard" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
-            Dashboard
-          </Link>
-          {
-            isAuthenticated && (
-              <Link to="/signin" onClick={() => {logout; setIsOpen(false)}} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+          {isAuthenticated && (
+            <>
+              <Link
+                to="/assessment"
+                onClick={() => setIsOpen(false)}
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium ${
+                  location.pathname === "/assessment" ? "font-extrabold" : ""
+                }`}
+              >
+                Assessment
+              </Link>
+              <Link
+                to="/dashboard"
+                onClick={() => setIsOpen(false)}
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium ${
+                  location.pathname === "/dashboard" ? "font-extrabold" : ""
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/signin"
+                onClick={() => {
+                  logout();
+                  setIsOpen(false);
+                }}
+                className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium"
+              >
                 Logout
               </Link>
-            )
-          }
+            </>
+          )}
+          {!isAuthenticated && (
+            <Link
+              to="/signin"
+              onClick={() => setIsOpen(false)}
+              className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
+                location.pathname === "/signin" ? "font-extrabold" : ""
+              }`}
+            >
+              {location.pathname === "/signin" ? "" : "Sign In"}
+            </Link>
+          )}
         </Collapsible.Content>
       </Collapsible.Root>
     </nav>

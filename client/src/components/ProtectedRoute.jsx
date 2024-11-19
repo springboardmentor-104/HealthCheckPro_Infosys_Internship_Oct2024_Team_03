@@ -15,9 +15,10 @@ const ProtectedRoute = ({ children }) => {
   const goToSignIn = () => {
     navigate("/signin");
   };
+  
 
-    // return isAuthenticated ? children : <Navigate to="/signin" replace />; // use this only
-  return isAuthenticated ? children : goToSignIn;
+    return isAuthenticated ? children : <Navigate to="/signin" replace />; // use this only
+  // return isAuthenticated ? children : goToSignIn;
 };
 
 export default ProtectedRoute;

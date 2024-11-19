@@ -44,12 +44,6 @@ const routes = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/articles" element={
-            <ProtectedRoute>
-              <Articles />
-            </ProtectedRoute>
-            } 
-          />
           <Route path="/leaderboard" element={
             <ProtectedRoute>
               <Leaderboard />
