@@ -34,9 +34,9 @@ const HeroSection = () => {
             your health.
           </p>
           {!isSignedIn ? (
-            <button className="hero-section-button" onClick={() => navigate("/signup")}>Get Examined</button>
+            <button className="hero-section-button hover:text-white" onClick={() => navigate("/signup")}>Get Examined</button>
           ) : (
-            <button className="hero-section-button" onClick={() => navigate("/dashboard")}>Go to Dashboard</button>
+            <button className="hero-section-button hover:text-white" onClick={() => navigate("/dashboard")}>Go to Dashboard</button>
           )}
         </div>
         <div className="carousel mt-8">
@@ -45,7 +45,7 @@ const HeroSection = () => {
               key={index}
               src={slide}
               alt={`Slide ${index + 1}`}
-              className={`transition-transform duration-500 ease-in-out ${
+              className={`rounded-3xl transition-transform duration-500 ease-in-out ${
                 currentSlide === index ? "block" : "hidden"
               }`}
             />

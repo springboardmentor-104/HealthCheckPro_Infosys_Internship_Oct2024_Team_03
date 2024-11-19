@@ -15,13 +15,15 @@ const NewUserAssessmentPage = () => {
   const [ userCompletedCategoriesNames, setUserCompletedCategoriesNames ] = useState([]);
 
   const getStatus = async () => {
+    const token = localStorage.getItem("token");
     const response = await fetch(
       `http://localhost:3000/user-assessment/status`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          userid: userId, // 6714f6b7e08a34409125cc0c
+          // userid: userId, // 6714f6b7e08a34409125cc0c
+          "Authorization": `Bearer ${token}`
         },
       }
     );

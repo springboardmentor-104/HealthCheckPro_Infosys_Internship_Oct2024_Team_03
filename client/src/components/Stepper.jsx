@@ -28,7 +28,7 @@ const Stepper = ({
         <p className="text-blue-500 text-left">
           Progress:{" "}
           <span className="font-semibold text-gray-700">
-            {categories.findIndex((cat) => cat.id === currentCategory) + 1} of{" "}
+            {categories.findIndex((cat) => cat._id === currentCategory) + 1} of{" "}
             {categories.length}
           </span>
         </p>

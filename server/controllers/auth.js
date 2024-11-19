@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import transporter from "../config/nodemailer.js";
 import crypto from "crypto";
+import { generateToken } from "../utils/jwt.js";
 
 let otpStore = {}; // temporary store for OTPs
 let verifiedEmails = {}; // temporary store for verified mails
@@ -94,7 +95,9 @@ export const signIn = async (req, res) => {
         .status(400)
         .json({ error: "invalid credentials: password doesn't matched" });
 
-    res.status(200).json({ message: "Logged in successfully!", user });
+    const token = generateToken(user);
+
+    res.status(200).json({ message: "Logged in successfully!", user, token });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,9 +1,9 @@
 import express from "express"
 import { getLeaderboard } from "../controllers/leaderboard.js";
-import { isAuthenticated } from "../middlewares/authMiddleware.js";
+import { authentiateToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/:category", isAuthenticated, getLeaderboard);
+router.get("/:category", authentiateToken, getLeaderboard);
 
 export default router
