@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import * as Collapsible from "@radix-ui/react-collapsible";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../features/user/userSlice";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    dispatch(clearUser());
+    console.log("Logged out!");
   };
 
   return (
@@ -30,6 +40,14 @@ const Navbar = () => {
           <Link to="/dashboard" className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
             Dashboard
           </Link>
+          {
+            isAuthenticated && (
+              <Link to="/signin" onClick={logout} className="hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium">
+                Logout
+              </Link>
+            )
+          }
+          
         </div>
         <div className="md:hidden">
           <button
@@ -54,6 +72,13 @@ const Navbar = () => {
           <Link to="/dashboard" onClick={() => setIsOpen(false)} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
             Dashboard
           </Link>
+          {
+            isAuthenticated && (
+              <Link to="/signin" onClick={() => {logout; setIsOpen(false)}} className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium">
+                Logout
+              </Link>
+            )
+          }
         </Collapsible.Content>
       </Collapsible.Root>
     </nav>

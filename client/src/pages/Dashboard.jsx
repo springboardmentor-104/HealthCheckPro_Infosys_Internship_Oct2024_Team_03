@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BsThreeDotsVertical, BsPerson } from 'react-icons/bs';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import axios from 'axios';
@@ -39,14 +39,15 @@ const Dashboard = () => {
 
     const navigate = useNavigate(); // Used for navigation between pages
 
-    const checkUserStatusAndRedirect = async () => {
+    const checkUserStatusAndRedirect = useCallback(async () => {
+        const token = localStorage.getItem("token");
       const userStatus = await fetch(
         `http://localhost:3000/user-assessment/status`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            userid: userId,
+            "Authorization": `Bearer ${token}`
           },
         }
       );
@@ -61,17 +62,17 @@ const Dashboard = () => {
       ) {
         navigate("/new-user-assessment");
       }
-    };
+    }, [navigate]);
 
-    //function to fetch data from API
-    useEffect(() => {
-        checkUserStatusAndRedirect();
-        const fetchMetrics = async () => {
+    const fetchMetrics = useCallback(async () => {
             try {
+                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     "http://localhost:3000/user-assessment/latest-attempt",
                     {
-                        headers: { userid: userId }
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
                     }
                 );
                 const { latestCompleteAttempt, latestIncompleteAttempt } = response.data;
@@ -116,10 +117,13 @@ const Dashboard = () => {
                 console.error('Error fetching latest assessment attempt:', error.message);
                 alert('Unable to fetch assessment data. Please check if the server is running.');
             }
-        };
+        }, []);
 
+    //function to fetch data from API
+    useEffect(() => {
+        checkUserStatusAndRedirect();
         fetchMetrics();
-    }, []);
+    }, [checkUserStatusAndRedirect, fetchMetrics]);
 
     const handleButtonClick = () => {
         navigate('/assessment'); //for navigation to AssessmentPage

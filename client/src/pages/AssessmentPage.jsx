@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
 
 const AssessmentPage = () => {
+  console.log("assessment page...............")
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const userId = user.user._id;
@@ -56,17 +57,36 @@ const AssessmentPage = () => {
     }
   }, []);
 
+  const startAssessment = useCallback(async (categoryId) => {
+    console.log({ categoryId });
+    setCurrentCategory(categoryId);
+    setQuestionAnswers({}); // Reset answers for new category
+    try {
+      const response = await fetch(
+        `http://localhost:3000/categories/${categoryId}/questions`
+      );
+      const questions = await response.json();
+      setCurrentCategoryQuestions(questions);
+      console.log({ currentCategoryQuestions: questions });
+      setCurrentQuestionIndex(0);
+      setSelectedOption(null);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  }, []);
+
   // 2. fetch status of user to get incomplete categories in an assessment round
   const getStatus = useCallback(
     async (categories) => {
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch(
           `http://localhost:3000/user-assessment/status`,
           {
             method: "GET",
             headers: {
               "Content-type": "application/json",
-              userid: userId,
+              "Authorization": `Bearer ${token}`
             },
           }
         );
@@ -104,26 +124,8 @@ const AssessmentPage = () => {
         console.error("Error fetching status:", error);
       }
     },
-    [userId]
+    [startAssessment]
   );
-
-  const startAssessment = useCallback(async (categoryId) => {
-    console.log({ categoryId });
-    setCurrentCategory(categoryId);
-    setQuestionAnswers({}); // Reset answers for new category
-    try {
-      const response = await fetch(
-        `http://localhost:3000/categories/${categoryId}/questions`
-      );
-      const questions = await response.json();
-      setCurrentCategoryQuestions(questions);
-      console.log({ currentCategoryQuestions: questions });
-      setCurrentQuestionIndex(0);
-      setSelectedOption(null);
-    } catch (error) {
-      console.error("Error fetching questions:", error);
-    }
-  }, []);
 
   useEffect(() => {
     const initializeAssessment = async () => {
@@ -146,13 +148,14 @@ const AssessmentPage = () => {
 
   const submitAssessment = async () => {
     try {
+      const token = localStorage.getItem("token")
       const response = await fetch(
         `http://localhost:3000/user-assessment/submit`,
         {
           method: "PATCH",
           headers: {
             "Content-type": "application/json",
-            userid: userId,
+            "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({
             categoryId: currentCategory,

@@ -32,6 +32,7 @@ const SignIn = () => {
       setToastMessage("LoggedIn successfully!");
       setShowSuccessNotification(true);
       setTimeout(() => setShowSuccessNotification(false), 3000);
+      localStorage.setItem("token", responseJson.token)
       dispatch(setUser(responseJson.user));
       
       navigate("/dashboard");
