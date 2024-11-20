@@ -130,8 +130,8 @@ const Dashboard = () => {
               assessment.totalScore >= 80
                 ? "Excellent"
                 : assessment.totalScore >= 50
-                ? "Good"
-                : "Needs Improvement";
+                  ? "Good"
+                  : "Needs Improvement";
 
             return { title, value: assessment.totalScore, status, color };
           }
@@ -159,6 +159,27 @@ const Dashboard = () => {
   const handleButtonClick = () => {
     navigate("/assessment"); //for navigation to AssessmentPage
   };
+
+
+  //Static data for Previous Report Table
+  const staticData = [
+    {
+      id: 1,
+      timestamp: "2024-11-01 14:32:00",
+      overallScore: 78,
+    },
+    {
+      id: 2,
+      timestamp: "2024-11-08 10:15:00",
+      overallScore: 85,
+    },
+    {
+      id: 3,
+      timestamp: "2024-11-15 16:45:00",
+      overallScore: 92,
+    },
+  ];
+
 
   return (
     <>
@@ -273,8 +294,8 @@ const Dashboard = () => {
                       overallScore >= 75
                         ? "Great"
                         : overallScore >= 50
-                        ? "Good"
-                        : "Needs Improvement"
+                          ? "Good"
+                          : "Needs Improvement"
                     }
                     color="#34495e"
                   />
@@ -314,6 +335,56 @@ const Dashboard = () => {
                   />
                 </div>
               </div>
+
+              {/* Table for Assessment History */}
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                  Your Assessment History
+                </h2>
+                <table className="min-w-full table-auto border-collapse bg-white">
+                  <thead className="bg-black text-white">
+                    <tr>
+                      <th className="py-3 px-4 border border-gray-300">S.No</th>
+                      <th className="py-3 px-4 border border-gray-300">
+                        Time Stamp
+                      </th>
+                      <th className="py-3 px-4 border border-gray-300">
+                        Overall Score
+                      </th>
+                      <th className="py-3 px-4 border border-gray-300">
+                        View Board
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {staticData.map((data) => (
+                      <tr
+                        key={data.id}
+                        className="hover:bg-gray-100 text-center"
+                      >
+                        <td className="py-3 px-4 border border-gray-300">
+                          {data.id}
+                        </td>
+                        <td className="py-3 px-4 border border-gray-300">
+                          {data.timestamp}
+                        </td>
+                        <td className="py-3 px-4 border border-gray-300">
+                          {data.overallScore}
+                        </td>
+                        <td className="py-3 px-4 border border-gray-300">
+                          <button
+                            className="bg-black text-white py-1 px-3 rounded-full hover:bg-gray-800"
+                            onClick={() => navigate(`/report/${data.id}`)}
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
             </main>
             {/* Footer */}
             <footer className="bg-gray-800 text-white p-4">
