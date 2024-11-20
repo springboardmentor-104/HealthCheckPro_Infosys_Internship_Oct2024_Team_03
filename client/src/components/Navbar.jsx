@@ -36,8 +36,8 @@ const Navbar = () => {
         <div className="hidden md:flex justify-between space-x-5">
           <Link
             to="/"
-            className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-              location.pathname === "/" ? "font-extrabold" : ""
+            className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+              location.pathname === "/" ? "font-bold" : "font-medium"
             }`}
           >
             Home
@@ -45,8 +45,10 @@ const Navbar = () => {
           {!isAuthenticated && (
             <Link
               to="/signin"
-              className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-                location.pathname === "/signin" ? "font-extrabold" : ""
+              className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+                location.pathname === "/signin"
+                  ? "font-bold"
+                  : "font-medium"
               }`}
             >
               {location.pathname === "/signin" ? "" : "Sign In"}
@@ -56,24 +58,30 @@ const Navbar = () => {
             <>
               <Link
                 to="/assessment"
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-                  location.pathname === "/assessment" ? "font-extrabold" : ""
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+                  location.pathname === "/assessment"
+                    ? "font-bold"
+                    : "font-medium"
                 }`}
               >
                 Assessment
               </Link>
               <Link
                 to="/leaderboard"
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-                  location.pathname === "/leaderboard" ? "font-extrabold" : ""
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+                  location.pathname === "/leaderboard"
+                    ? "font-bold"
+                    : "font-medium"
                 }`}
               >
                 Leaderboard
               </Link>
               <Link
                 to="/dashboard"
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-                  location.pathname === "/dashboard" ? "font-extrabold" : ""
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+                  location.pathname === "/dashboard"
+                    ? "font-bold"
+                    : "font-medium"
                 }`}
               >
                 Dashboard
@@ -82,8 +90,10 @@ const Navbar = () => {
               {/* Temporary adding report in navbar ... remove it */}
               <Link
                 to="/report"
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-                  location.pathname === "/report" ? "font-extrabold" : ""
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+                  location.pathname === "/report"
+                    ? "font-bold"
+                    : "font-medium"
                 }`}
               >
                 Report
@@ -112,8 +122,8 @@ const Navbar = () => {
           <Link
             to="/"
             onClick={() => setIsOpen(false)}
-            className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-              location.pathname === "/" ? "font-extrabold" : ""
+            className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+              location.pathname === "/" ? "font-bold" : "font-medium"
             }`}
           >
             Home
@@ -123,8 +133,10 @@ const Navbar = () => {
               <Link
                 to="/assessment"
                 onClick={() => setIsOpen(false)}
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium ${
-                  location.pathname === "/assessment" ? "font-extrabold" : ""
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 ${
+                  location.pathname === "/assessment"
+                    ? "font-bold"
+                    : "font-medium"
                 }`}
               >
                 Assessment
@@ -132,8 +144,10 @@ const Navbar = () => {
               <Link
                 to="/dashboard"
                 onClick={() => setIsOpen(false)}
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium ${
-                  location.pathname === "/dashboard" ? "font-extrabold" : ""
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 ${
+                  location.pathname === "/dashboard"
+                    ? "font-bold"
+                    : "font-medium"
                 }`}
               >
                 Dashboard
@@ -154,8 +168,10 @@ const Navbar = () => {
             <Link
               to="/signin"
               onClick={() => setIsOpen(false)}
-              className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-medium ${
-                location.pathname === "/signin" ? "font-extrabold" : ""
+              className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
+                location.pathname === "/signin"
+                  ? "font-bold"
+                  : "font-medium"
               }`}
             >
               {location.pathname === "/signin" ? "" : "Sign In"}
