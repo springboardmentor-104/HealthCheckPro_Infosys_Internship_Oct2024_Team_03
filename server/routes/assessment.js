@@ -9,7 +9,7 @@ router.post("/start-new-round", authentiateToken, startNewRound);
 router.patch("/submit", authentiateToken, submitCatgegoryTest);
 router.get("/latest-attempt",authentiateToken, fetchUserLatestAssessment);
 router.get("/all-attempts",authentiateToken, fetchUserAssessmentHistory);
-router.get("/attempt/:attemptId", authentiateToken, getAttemptById);
 router.get("/attempt/:attemptId/:categoryId", authentiateToken, getAssessmentFromAttempt);
+router.get("/attempt/:attemptId", authentiateToken, getAttemptById);
 
 export default router;

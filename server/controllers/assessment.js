@@ -189,7 +189,8 @@ export const fetchUserAssessmentHistory = async (req, res) => {
 
 export const getAttemptById = async(req, res) => {
   try {
-    const userId = req.user._id;
+    // const userId = req.user._id;
+    const userId = req.headers.userid;
     const attemptId = req.params.attemptId;
 
     const attemptDoc = await UserAssessmentHistory.findOne({ _id: attemptId });
@@ -197,8 +198,9 @@ export const getAttemptById = async(req, res) => {
     if(!attemptDoc)
       return res.status(404).json({ message: "Attempt Not Found" });
 
-    if(attemptDoc.userId !== userId)
-      return res.status(403).json({ message: "Unauthorized Access! "});
+    // ********* ||||||||
+    // if(attemptDoc.userId !== userId)
+    //   return res.status(403).json({ message: "Unauthorized Access! "});
 
     const { assessments, ...restFields } = attemptDoc.toObject(); // convert mongoose object to JS object for destructuring process
 
@@ -207,7 +209,7 @@ export const getAttemptById = async(req, res) => {
       totalScore: assessment.totalScore
     }));
 
-    res.status(200).json({...restFields, assessmentsScore});
+    res.status(200).json({...restFields, assessments: assessmentsScore});
 
   } catch(error) {
     res.status(500).json({ message: "Server Error", error });
@@ -224,14 +226,28 @@ export const getAssessmentFromAttempt = async (req, res) => {
     if(!assessmentDoc)
       return res.status(404).json({ message: "Attempt Not Found" });
 
-    if(assessmentDoc.userId.toString() !== userId.toString()) // toString() is used to conver ObjectId into string for comparison
-      return res.status(403).json({ message: "Unauthorized Access!" });
+    // ****************|||||||||||||||||||||
+    // if(assessmentDoc.userId.toString() !== userId.toString()) // toString() is used to conver ObjectId into string for comparison
+    //   return res.status(403).json({ message: "Unauthorized Access!" });
 
-    const userResponse = assessmentDoc.assessments.find(assessment => assessment.categoryId.toString() === categoryId);
+    const categoryAssessment = assessmentDoc.assessments.find(assessment => assessment.categoryId.toString() === categoryId);
 
-    if(!userResponse) 
-      return res.status(404).json({ message: "Assessment Not Found for the Given Category" });
+    const userResponse = {
+      categoryId,
+      questions: [],
+      totalScore: categoryAssessment.totalScore
+    };
 
+    for (const question of categoryAssessment.questions) {
+      const questionDoc = await Question.findOne({ _id: question.questionId });
+      const questionText = questionDoc.questionText;
+      const selectedOption = questionDoc.options.find(
+        (option) => 
+          option._id.toString() === question.selectedOptionId.toString()
+      );
+      const selectedOptionText = selectedOption.optionText;
+      userResponse.questions.push({ questionText, selectedOptionText, _id: questionDoc._id });
+    }
     res.status(200).json({ userResponse });
 
   } catch(error) {
