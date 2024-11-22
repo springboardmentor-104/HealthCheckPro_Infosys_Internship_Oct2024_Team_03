@@ -46,9 +46,7 @@ const Navbar = () => {
             <Link
               to="/signin"
               className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
-                location.pathname === "/signin"
-                  ? "font-bold"
-                  : "font-medium"
+                location.pathname === "/signin" ? "font-bold" : "font-medium"
               }`}
             >
               {location.pathname === "/signin" ? "" : "Sign In"}
@@ -87,17 +85,15 @@ const Navbar = () => {
                 Dashboard
               </Link>
 
-              {/* Temporary adding report in navbar ... remove it */}
-              <Link
-                to="/report"
-                className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
-                  location.pathname === "/report"
-                    ? "font-bold"
-                    : "font-medium"
-                }`}
-              >
-                Report
-              </Link>
+              { /\/report\/attempt\/[^/]+/.test(location.pathname) && (
+                <Link
+                  to="/report"
+                  className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-bold`}
+                >
+                  Report
+                </Link>
+              )}
+
               <Link
                 to={location.pathname === "/" ? "/" : "/signin"}
                 onClick={logout}
@@ -169,9 +165,7 @@ const Navbar = () => {
               to="/signin"
               onClick={() => setIsOpen(false)}
               className={`hover:cursor-pointer text-blue-500 hover:text-green-400 ${
-                location.pathname === "/signin"
-                  ? "font-bold"
-                  : "font-medium"
+                location.pathname === "/signin" ? "font-bold" : "font-medium"
               }`}
             >
               {location.pathname === "/signin" ? "" : "Sign In"}

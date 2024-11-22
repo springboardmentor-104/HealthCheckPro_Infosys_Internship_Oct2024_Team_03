@@ -50,7 +50,7 @@ const routes = () => {
             </ProtectedRoute>
             } 
           />
-          <Route path="/report" element={
+          <Route path="/report/attempt/:attemptNumber" element={
             <ProtectedRoute>
               <Report />
             </ProtectedRoute>

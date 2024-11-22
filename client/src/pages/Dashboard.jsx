@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; //for navigation
 import * as Dialog from "@radix-ui/react-dialog";
+import { changeDateFormatToNLN } from "../utils/convertDate";
 
 //metricRow for displaying scores
 const MetricRow = ({ icon, title, value, status, color }) => (
@@ -33,6 +34,7 @@ const Dashboard = () => {
   const userId = user.user._id;
   console.log({ userId }, "dash");
   const [metrics, setMetrics] = useState([]);
+  const [attemptHistory, setAttemptHistory] = useState([]);
   const [overallScore, setOverallScore] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [latestCompleteAttempt, setLatestCompleteAttempt] = useState(null);
@@ -150,10 +152,32 @@ const Dashboard = () => {
     }
   }, []);
 
+  const fetchHistoryOfAllAttempts = async() => {
+    try {
+      console.log("HIIIIII")
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3000/user-assessment/all-attempts", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+
+      const attempts = await response.json();
+      console.log({attempts});
+
+      setAttemptHistory(attempts.attemptHistory);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   //function to fetch data from API
   useEffect(() => {
     checkUserStatusAndRedirect();
     fetchMetrics();
+    fetchHistoryOfAllAttempts();
   }, [checkUserStatusAndRedirect, fetchMetrics]);
 
   const handleButtonClick = () => {
@@ -294,8 +318,8 @@ const Dashboard = () => {
                       overallScore >= 75
                         ? "Great"
                         : overallScore >= 50
-                          ? "Good"
-                          : "Needs Improvement"
+                        ? "Good"
+                        : "Needs Improvement"
                     }
                     color="#34495e"
                   />
@@ -344,7 +368,9 @@ const Dashboard = () => {
                 <table className="min-w-full table-auto border-collapse bg-white">
                   <thead className="bg-black text-white">
                     <tr>
-                      <th className="py-3 px-4 border border-gray-300">S.No</th>
+                      <th className="py-3 px-4 border border-gray-300">
+                        Attempt Number
+                      </th>
                       <th className="py-3 px-4 border border-gray-300">
                         Time Stamp
                       </th>
@@ -357,26 +383,30 @@ const Dashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {staticData.map((data) => (
+                    {attemptHistory.map((attempt, index) => (
                       <tr
-                        key={data.id}
+                        key={attempt._id}
                         className="hover:bg-gray-100 text-center"
                       >
                         <td className="py-3 px-4 border border-gray-300">
-                          {data.id}
+                          {attempt.attemptNumber}
                         </td>
                         <td className="py-3 px-4 border border-gray-300">
-                          {data.timestamp}
+                          {changeDateFormatToNLN(attempt.date)}
                         </td>
                         <td className="py-3 px-4 border border-gray-300">
-                          {data.overallScore}
+                          {attempt.isComplete ? attempt.overallScore : "-"}
                         </td>
                         <td className="py-3 px-4 border border-gray-300">
                           <button
-                            className="bg-black text-white py-1 px-3 rounded-full hover:bg-gray-800"
-                            onClick={() => navigate(`/report/${data.id}`)}
+                            className={`py-1 px-3 rounded-full  ${
+                              attempt.isComplete
+                                ? "text-white bg-black hover:bg-gray-800"
+                                : "text-black bg-red-50 cursor-default"
+                            }`}
+                            onClick={() => navigate(`/report/attempt/${attempt.attemptNumber}/`, { state: { attemptId: attempt._id}})}
                           >
-                            View
+                            {attempt.isComplete ? "View" : "Incomplete"}
                           </button>
                         </td>
                       </tr>
@@ -384,7 +414,6 @@ const Dashboard = () => {
                   </tbody>
                 </table>
               </div>
-
             </main>
             {/* Footer */}
             <footer className="bg-gray-800 text-white p-4">

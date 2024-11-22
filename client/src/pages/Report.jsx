@@ -13,6 +13,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { changeDateFormatToNLN } from "../utils/convertDate";
+import { useLocation, useNavigate } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -23,7 +25,10 @@ ChartJS.register(
   Legend
 );
 
-const Report = ({ attemptId = "673829ad2f136d229fd16908" }) => {
+const Report = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { attemptId } = location.state || {}
 
   // To store attempt data
   const [attemptData, setAttemptData] = useState({});
@@ -106,6 +111,7 @@ const Report = ({ attemptId = "673829ad2f136d229fd16908" }) => {
 
       const attemptDataJson = await response.json();
       setAttemptData(attemptDataJson);
+      console.log({attemptData})
       // setAssessmentScores(attemptData.assessments);
 
       // update scores of each category
@@ -128,15 +134,11 @@ const Report = ({ attemptId = "673829ad2f136d229fd16908" }) => {
         ],
       });
 
-      // format date
-      const dateObj = new Date(attemptData.date);
-      const options = { day: "numeric", month: "long", year: "numeric" };
-      const formattedDate = dateObj.toLocaleDateString("en-US", options);
-      setDate(formattedDate);
+      setDate(changeDateFormatToNLN(attemptData.date));
     } catch (error) {
       console.log({ error });
     }
-  }, [attemptId, categories, attemptData.assessments, attemptData.date]);
+  }, [attemptId, categories, attemptData]);
 
   const fetchCurrentAssessmentUserQuestions = useCallback(async (categoryId) => {
     try {
@@ -153,7 +155,14 @@ const Report = ({ attemptId = "673829ad2f136d229fd16908" }) => {
     } catch (error) {
       console.log({ error });
     }
-  }, [attemptId]);
+  }, [attemptId, currentAssessmentContent]);
+  
+  useEffect(() => {
+    if(!attemptId) {
+      navigate("/dashboard");
+    }
+    fetchAttempt();
+  }, [fetchAttempt]);
 
   useEffect(() => {
     if(selectedCategory) {
@@ -161,9 +170,6 @@ const Report = ({ attemptId = "673829ad2f136d229fd16908" }) => {
     }
   }, [selectedCategory, fetchCurrentAssessmentUserQuestions])
 
-  useEffect(() => {
-    fetchAttempt();
-  }, [fetchAttempt]);
 
   const defaultResponses = [
     {

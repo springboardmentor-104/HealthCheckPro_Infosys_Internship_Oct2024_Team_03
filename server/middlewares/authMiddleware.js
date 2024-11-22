@@ -29,7 +29,7 @@ export const authentiateToken = async (req, res, next) => {
     jwt.verify(token, jwtSecret, async(err, user) => {
       if(err) 
         return res.status(403).json({ message: "Invalid token" });
-
+      
       req.user = user;
       next();
     })

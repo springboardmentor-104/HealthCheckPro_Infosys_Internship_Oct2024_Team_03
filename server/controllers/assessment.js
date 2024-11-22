@@ -189,8 +189,7 @@ export const fetchUserAssessmentHistory = async (req, res) => {
 
 export const getAttemptById = async(req, res) => {
   try {
-    // const userId = req.user._id;
-    const userId = req.headers.userid;
+    const userId = req.user._id;
     const attemptId = req.params.attemptId;
 
     const attemptDoc = await UserAssessmentHistory.findOne({ _id: attemptId });
