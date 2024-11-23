@@ -29,6 +29,19 @@ function Leaderboard() {
 
   useEffect(() => {
     fetchLeaderboard(selectedScore);
+
+    // Inject keyframes for floating animation if not already present
+    const styleSheet = document.styleSheets[0];
+    const floatingKeyframes = `
+      @keyframes floating {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0); }
+      }
+    `;
+    if (!Array.from(styleSheet.cssRules).some((rule) => rule.cssText.includes('floating'))) {
+      styleSheet.insertRule(floatingKeyframes, styleSheet.cssRules.length);
+    }
   }, [fetchLeaderboard, selectedScore]);
 
   const handleScoreChange = (event) => {
