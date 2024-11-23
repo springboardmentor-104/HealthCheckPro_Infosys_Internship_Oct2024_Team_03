@@ -245,7 +245,8 @@ export const getAssessmentFromAttempt = async (req, res) => {
           option._id.toString() === question.selectedOptionId.toString()
       );
       const selectedOptionText = selectedOption.optionText;
-      userResponse.questions.push({ questionText, selectedOptionText, _id: questionDoc._id });
+      const selectedOptionAdvice = selectedOption.advice
+      userResponse.questions.push({ questionText, selectedOptionText, _id: questionDoc._id, advice: selectedOptionAdvice });
     }
     res.status(200).json({ userResponse });
 

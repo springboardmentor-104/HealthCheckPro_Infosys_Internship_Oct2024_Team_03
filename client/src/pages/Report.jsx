@@ -170,62 +170,37 @@ const Report = () => {
     }
   }, [selectedCategory, fetchCurrentAssessmentUserQuestions])
 
-
-  const defaultResponses = [
-    {
-      question: "How often do you exercise?",
-      choice: "3-4 times a week",
-      advice: "Great job! Consistency is key to staying fit.",
-    },
-    {
-      question: "How often do you experience stress?",
-      choice: "Frequently",
-      advice:
-        "Consider practicing mindfulness or yoga to manage stress better.",
-    },
-    {
-      question: "Do you eat vegetables daily?",
-      choice: "Sometimes",
-      advice:
-        "Try to include more vegetables in your meals for better nutrition.",
-    },
-    {
-      question: "How many hours do you sleep daily?",
-      choice: "5-6 hours",
-      advice: "Aim for 7-8 hours of sleep to improve overall health.",
-    },
-  ];
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-400 to-blue-600">
-      <div className="max-w-4xl w-full bg-white rounded-3xl shadow-2xl p-8 m-8 md:mt-20">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 p-4 md:p-0">
+      <div className="max-w-4xl w-full bg-white rounded-3xl shadow-2xl p-4 md:p-8 m-8 md:mt-20">
         <div className="flex flex-col justify-center items-center">
-          <h2 className="text-3xl font-bold mb-3 text-gray-900 text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold mb-3 text-gray-900 text-center">
             Assessment Report
           </h2>
 
-          <div className="text-center w-auto max-w-md">
+          <div className="text-left w-auto max-w-md text-sm md:text-base">
             <p className="font-normal text-gray-800">
               Attempt Number:
-              <span className="font-medium text-gray-900">
+              <span className="font-medium text-gray-900 ml-1">
                 {attemptData.attemptNumber}
               </span>
             </p>
             <p className="font-normal text-gray-800">
-              Date: <span className="font-medium text-gray-900">{date}</span>
+              Date:{" "}
+              <span className="font-medium text-gray-900 ml-1">{date}</span>
             </p>
           </div>
         </div>
 
         {/* Health Insights Section */}
-        <div className="bg-gradient-to-r from-yellow-200 via-orange-300 to-pink-400 rounded-3xl p-8 mt-6 shadow-sm transform transition-all duration-500 hover:scale-105">
+        <div className="bg-gradient-to-r from-yellow-200 via-orange-300 to-pink-400 rounded-3xl p-5 md:p-8 mt-6 shadow-sm transform transition-all duration-500 hover:scale-105">
           <div className="flex items-center space-x-4 mb-4">
             <FaHeartbeat size={32} className="text-red-600" />
-            <h3 className="text-2xl font-semibold text-red-800">
+            <h3 className="text-lg md:text-xl font-medium text-red-800">
               Health Insights
             </h3>
           </div>
-          <p className="text-gray-700">
+          <p className="text-gray-700 text-sm text-center">
             Based on your responses, we recommend focusing on maintaining a
             balanced diet and regular exercise to improve your overall health.
           </p>
@@ -233,18 +208,22 @@ const Report = () => {
 
         {/* Category Scores Section */}
         <div className="mt-6">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4 ml-3">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4 ml-3">
             Category Scores
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {categories.map((category) => (
               <div
                 key={category.id}
-                className={`flex flex-col items-center justify-center p-6  rounded-2xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg cursor-pointer ${selectedCategory && selectedCategory === category.id ? "bg-green-100" : "bg-gray-100"}`}
+                className={`flex flex-col items-center justify-center p-3 md:p-6  rounded-2xl shadow-md transform transition-transform hover:scale-105 hover:shadow-lg cursor-pointer ${
+                  selectedCategory && selectedCategory === category.id
+                    ? "bg-green-100"
+                    : "bg-gray-100"
+                }`}
                 onClick={() => setSelectedCateogry(category.id)}
               >
                 {category.icon}
-                <h4 className="text-xl font-medium text-gray-800 mt-2">
+                <h4 className="text-base md:text-xl font-medium text-gray-800 mt-2">
                   {category.name}
                 </h4>
                 <p className="text-gray-600">
@@ -257,38 +236,52 @@ const Report = () => {
         </div>
 
         {/* Your Responses Section */}
-        <div className="mt-8  bg-gray-100  p-6 rounded-3xl shadow-sm">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+        <div className="mt-8  bg-gray-100 px-3 py-6 md:p-6 rounded-3xl shadow-sm">
+          <h3 className="ml-2 md:ml-0 text-xl md:text-2xl font-semibold text-gray-800 mb-4">
             Your Responses
           </h3>
-          <div className="space-y-4">
-            {currentAssessmentContent.questions &&
-              currentAssessmentContent.questions.map((question, index) => (
-                <div
-                  key={question._id}
-                  className="p-4 bg-white rounded-lg shadow-md border-l-4 border-blue-400"
-                >
-                  <p className="text-lg font-medium text-gray-800">
-                    <span className="mr-4">Q.{index + 1}&#41;</span>
-                    {question.questionText}
-                  </p>
-                  <div className="ml-14">
-                    <p className="text-gray-700 mt-1">
-                      <span className="font-semibold">Selected Answer: </span>
-                      {question.selectedOptionText}
-                    </p>
-                    <p className="text-gray-700 mt-1">
-                      <span className="font-semibold">Advice:</span> -
-                    </p>
-                  </div>
-                </div>
-              ))}
-          </div>
+          {!selectedCategory ? (
+            <>
+              <p className="text-center text-sm text-red-500 mt-2">
+                Select any category from above boxes to see your answers and
+                advice based on that answer
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="space-y-4 text-sm md:text-base">
+                {currentAssessmentContent.questions &&
+                  currentAssessmentContent.questions.map((question, index) => (
+                    <div
+                      key={question._id}
+                      className="p-4 bg-white rounded-xl shadow-md border-l-4 border-blue-400"
+                    >
+                      <p className="font-medium text-gray-800">
+                        <span className="mr-4">Q.{index + 1}&#41;</span>
+                        {question.questionText}
+                      </p>
+                      <div className="mt-4 md:mt-0 md:ml-14">
+                        <p className="text-gray-700 mt-1">
+                          <span className="font-semibold">
+                            Selected Answer:{" "}
+                          </span>
+                          {question.selectedOptionText}
+                        </p>
+                        <p className="text-gray-700 mt-1">
+                          <span className="font-semibold">Advice:</span>
+                          {question.advice}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Comparison Chart */}
         <div className="mt-8 bg-gray-100 p-6 rounded-3xl shadow-sm">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4">
             Comparison Chart
           </h3>
           <div className="h-64 w-full">
@@ -299,16 +292,16 @@ const Report = () => {
         {/* Navigation Buttons */}
         <div className="flex justify-between mt-6 space-x-4">
           <button
-            className="w-full bg-gradient-to-r from-red-400 via-pink-500 to-purple-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
-            onClick={() => window.location.reload()}
+            className="text-sm md:text-base w-full bg-gradient-to-r from-red-400 via-pink-500 to-purple-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
+            onClick={() => navigate("/dashboard")}
           >
-            Retake Assessment
+            Back to dashboard
           </button>
           <button
-            className="w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
-            onClick={() => alert("Thank you for using Health Check Pro!")}
+            className="text-sm md:text-base w-full bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200"
+            onClick={() => navigate("/assessment")}
           >
-            Finish
+            Retake Assessment
           </button>
         </div>
       </div>

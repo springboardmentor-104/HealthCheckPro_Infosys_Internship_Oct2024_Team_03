@@ -9,10 +9,10 @@ import { changeDateFormatToNLN } from "../utils/convertDate";
 
 //metricRow for displaying scores
 const MetricRow = ({ icon, title, value, status, color }) => (
-  <div className="flex items-center justify-between mb-6 p-4 transition-transform transform hover:scale-105 rounded-lg shadow-md bg-white hover:shadow-lg">
+  <div className="flex items-center justify-between mb-2 md:mb-6 p-4 transition-transform transform hover:scale-105 rounded-3xl shadow-md bg-white hover:shadow-lg">
     <div className="flex items-center gap-4">
       <div
-        className="w-10 h-10 rounded-lg flex items-center justify-center"
+        className="w-10 h-10 rounded-full flex items-center justify-center"
         style={{ backgroundColor: `${color}15` }}
       >
         {icon}
@@ -36,7 +36,6 @@ const Dashboard = () => {
   const [metrics, setMetrics] = useState([]);
   const [attemptHistory, setAttemptHistory] = useState([]);
   const [overallScore, setOverallScore] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [latestCompleteAttempt, setLatestCompleteAttempt] = useState(null);
   const [anyIncompleteAttempt, setAnyIncompleteAttempt] = useState(null);
   const [isErrorWhileFetchingData, setIsErrorWhileFetchingData] =
@@ -184,27 +183,6 @@ const Dashboard = () => {
     navigate("/assessment"); //for navigation to AssessmentPage
   };
 
-
-  //Static data for Previous Report Table
-  const staticData = [
-    {
-      id: 1,
-      timestamp: "2024-11-01 14:32:00",
-      overallScore: 78,
-    },
-    {
-      id: 2,
-      timestamp: "2024-11-08 10:15:00",
-      overallScore: 85,
-    },
-    {
-      id: 3,
-      timestamp: "2024-11-15 16:45:00",
-      overallScore: 92,
-    },
-  ];
-
-
   return (
     <>
       {loading ? (
@@ -269,10 +247,29 @@ const Dashboard = () => {
           {/* Main Content */}
           <div className="flex-1 flex flex-col md:mt-12">
             {/* md:ml-64 */}
-            <header className="flex justify-between items-center p-4 bg-white">
-              <h1 className="text-xl font-semibold text-gray-800 ml-4">
+            <header className="flex md:flex-row justify-between items-center p-4 bg-white">
+              <h1 className="text-xl font-semibold text-gray-800 md:ml-4">
                 Dashboard
+                {/* <div className="bg-white mt-4 font-medium text-lg">
+                  Hello {user.user.username}! Welcome to{" "}
+                  <span className="">HealthCheckPro</span>
+                </div> */}
               </h1>
+              {/* <div className="flex flex-row items-center bg-gray-50 p-4 rounded-3xl mr-4 mt-4 md:mt-0">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
+                  <BsPerson className="text-3xl text-gray-600" />
+                </div>
+                <div className="flex-col ml-3 text-sm font-light">
+                  <p>
+                    Username:{" "}
+                    <span className="font-normal">{user.user.username}</span>
+                  </p>
+                  <p>
+                    Gender:{" "}
+                    <span className="font-normal">{user.user.gender}</span>
+                  </p>
+                </div>
+              </div> */}
               {/* <div className="flex justify-end mb-4 md:hidden">
                         <button
                             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -327,8 +324,8 @@ const Dashboard = () => {
               )}
 
               {/* Consult Card */}
-              <div className="bg-white p-6 rounded-xl shadow-md mt-6">
-                <div className="flex justify-between">
+              <div className="bg-white p-6 rounded-3xl shadow-md mt-6">
+                <div className="flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       {anyIncompleteAttempt
@@ -340,16 +337,21 @@ const Dashboard = () => {
                       Health Check Pro!
                     </p>
                     <button
-                      className="mt-4 bg-black text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 hover:bg-gray-800"
+                      className={`mt-4 px-4 text-sm bg-gradient-to-r text-white py-3 rounded-full hover:opacity-90 transition-opacity duration-200 ${
+                        anyIncompleteAttempt
+                          ? "from-red-400 via-pink-500 to-purple-600"
+                          : "from-green-400 via-blue-400 to-blue-600"
+                      }`}
                       onClick={handleButtonClick}
                     >
-                      {latestCompleteAttempt
-                        ? "Take Re-Test To Update Score"
-                        : "Continue Assessment"}
+                      {anyIncompleteAttempt
+                        ? "Continue Assessment"
+                        : "Take Re-Test To Update Score"}
                     </button>
                   </div>
                   <img
                     src="https://media.licdn.com/dms/image/D4D12AQGHf3cXB-a_Pw/article-cover_image-shrink_720_1280/0/1679989721915?e=2147483647&v=beta&t=gSRxaHbmONY15TSKarHDWWZEiSYzFeOHCL-OaXyQ2ns"
+                    className="mx-auto md:mx-0 mt-5 md:mt-0"
                     style={{
                       width: "300px",
                       borderRadius: "15px",
@@ -365,54 +367,61 @@ const Dashboard = () => {
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">
                   Your Assessment History
                 </h2>
-                <table className="min-w-full table-auto border-collapse bg-white">
-                  <thead className="bg-black text-white">
-                    <tr>
-                      <th className="py-3 px-4 border border-gray-300">
-                        Attempt Number
-                      </th>
-                      <th className="py-3 px-4 border border-gray-300">
-                        Time Stamp
-                      </th>
-                      <th className="py-3 px-4 border border-gray-300">
-                        Overall Score
-                      </th>
-                      <th className="py-3 px-4 border border-gray-300">
-                        View Board
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {attemptHistory.map((attempt, index) => (
-                      <tr
-                        key={attempt._id}
-                        className="hover:bg-gray-100 text-center"
-                      >
-                        <td className="py-3 px-4 border border-gray-300">
-                          {attempt.attemptNumber}
-                        </td>
-                        <td className="py-3 px-4 border border-gray-300">
-                          {changeDateFormatToNLN(attempt.date)}
-                        </td>
-                        <td className="py-3 px-4 border border-gray-300">
-                          {attempt.isComplete ? attempt.overallScore : "-"}
-                        </td>
-                        <td className="py-3 px-4 border border-gray-300">
-                          <button
-                            className={`py-1 px-3 rounded-full  ${
-                              attempt.isComplete
-                                ? "text-white bg-black hover:bg-gray-800"
-                                : "text-black bg-red-50 cursor-default"
-                            }`}
-                            onClick={() => navigate(`/report/attempt/${attempt.attemptNumber}/`, { state: { attemptId: attempt._id}})}
-                          >
-                            {attempt.isComplete ? "View" : "Incomplete"}
-                          </button>
-                        </td>
+                <div className="rounded-3xl overflow-x-auto border-slate-400">
+                  <table className="min-w-full table-auto border-collapse text-md bg-white">
+                    <thead className="bg-green-50 text-gray-700">
+                      <tr>
+                        <th className="py-3 px-4 border border-gray-300">
+                          Attempt Number
+                        </th>
+                        <th className="py-3 px-4 border border-gray-300">
+                          Time Stamp
+                        </th>
+                        <th className="py-3 px-4 border border-gray-300">
+                          Overall Score
+                        </th>
+                        <th className="py-3 px-4 border border-gray-300">
+                          View Board
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {attemptHistory.map((attempt) => (
+                        <tr
+                          key={attempt._id}
+                          className="hover:bg-gray-100 text-center"
+                        >
+                          <td className="py-3 px-4 border border-gray-300">
+                            {attempt.attemptNumber}
+                          </td>
+                          <td className="py-3 px-4 border border-gray-300">
+                            {changeDateFormatToNLN(attempt.date)}
+                          </td>
+                          <td className="py-3 px-4 border border-gray-300">
+                            {attempt.isComplete ? attempt.overallScore : "-"}
+                          </td>
+                          <td className="py-3 px-4 border border-gray-300">
+                            <button
+                              className={`py-1 px-3 rounded-full  ${
+                                attempt.isComplete
+                                  ? "bg-blue-500 hover:bg-green-400 text-white"
+                                  : "text-black bg-red-50 cursor-default"
+                              }`}
+                              onClick={() =>
+                                navigate(
+                                  `/report/attempt/${attempt.attemptNumber}/`,
+                                  { state: { attemptId: attempt._id } }
+                                )
+                              }
+                            >
+                              {attempt.isComplete ? "View" : "Incomplete"}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </main>
             {/* Footer */}

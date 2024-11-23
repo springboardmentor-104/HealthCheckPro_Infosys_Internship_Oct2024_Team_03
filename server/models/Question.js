@@ -13,6 +13,9 @@ const optionSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  advice: {
+    type: String
+  }
 });
 
 const questionSchema = new mongoose.Schema(
