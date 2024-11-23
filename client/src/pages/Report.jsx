@@ -36,6 +36,8 @@ const Report = () => {
   // To store scores of all categories after fetching attempt
   // const [assessmentScores, setAssessmentScores] = useState([]);
 
+  const [overallScoreKey, setOverallScoreKey] = useState("");
+
   // To store Id of particular cateogry from categories
   const [selectedCategory, setSelectedCateogry] = useState(null);
 
@@ -96,7 +98,7 @@ const Report = () => {
   //   }
   // }, [])
 
-  const fetchAttempt = useCallback(async () => {
+  const fetchAttempt = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
@@ -113,6 +115,14 @@ const Report = () => {
       setAttemptData(attemptDataJson);
       console.log({attemptData})
       // setAssessmentScores(attemptData.assessments);
+
+      if(attemptData.overallScore <= 33.33) {
+        setOverallScoreKey("poor");
+      } else if(attemptData.overallScore <= 66.66 && attemptData.overallScore > 33.33) {
+        setOverallScoreKey("average")
+      } else {
+        setOverallScoreKey("excellent");
+      }
 
       // update scores of each category
       const updatedCategories = categories.map((category) => {
@@ -138,7 +148,7 @@ const Report = () => {
     } catch (error) {
       console.log({ error });
     }
-  }, [attemptId, categories, attemptData]);
+  };
 
   const fetchCurrentAssessmentUserQuestions = useCallback(async (categoryId) => {
     try {
@@ -155,20 +165,77 @@ const Report = () => {
     } catch (error) {
       console.log({ error });
     }
-  }, [attemptId, currentAssessmentContent]);
+  }, [selectedCategory]);
   
   useEffect(() => {
     if(!attemptId) {
       navigate("/dashboard");
     }
     fetchAttempt();
-  }, [fetchAttempt]);
+  }, [attemptId, fetchAttempt]);
 
   useEffect(() => {
     if(selectedCategory) {
       fetchCurrentAssessmentUserQuestions(selectedCategory)
     }
   }, [selectedCategory, fetchCurrentAssessmentUserQuestions])
+
+  const overallAdvice = {
+      poor: [
+        {
+          heading: "Start Small",
+          description: "Incorporate more fruits and veggies into your diet",
+        },
+        {
+          heading: "Stay Active",
+          description: "Aim for short daily exercise sessions",
+        },
+        {
+          heading: "Hydration",
+          description: "Drink plenty of water daily.",
+        },
+        {
+          heading: "Mindfulness",
+          description: "Practice stress-relief activities like meditation",
+        },
+      ],
+      average: [
+        {
+          heading: "Consistency",
+          description: "Stick to your healthy habits regularly",
+        },
+        {
+          heading: "Balanced Diet",
+          description: "Add variety to your meals",
+        },
+        {
+          heading: "Regular Exercise",
+          description: "Include both cardio and strength training",
+        },
+        {
+          heading: "Mental Wellness",
+          description: "Include both cardio and strength training",
+        },
+      ],
+      excellent: [
+        {
+          heading: "Maintain Habits",
+          description: "Keep up your good work!",
+        },
+        {
+          heading: "Explore",
+          description: "Try new exercises or activities",
+        },
+        {
+          heading: "Inspire",
+          description: "Share your journey with others",
+        },
+        {
+          heading: "Monitor",
+          description: "Regularly check your progress and adjust as needed.",
+        },
+      ],
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-400 to-blue-600 p-4 md:p-0">
@@ -196,14 +263,29 @@ const Report = () => {
         <div className="bg-gradient-to-r from-yellow-200 via-orange-300 to-pink-400 rounded-3xl p-5 md:p-8 mt-6 shadow-sm transform transition-all duration-500 hover:scale-105">
           <div className="flex items-center space-x-4 mb-4">
             <FaHeartbeat size={32} className="text-red-600" />
-            <h3 className="text-lg md:text-xl font-medium text-red-800">
+            <h3 className="text-xl md:text-2xl font-medium text-red-800">
               Health Insights
             </h3>
           </div>
-          <p className="text-gray-700 text-sm text-center">
-            Based on your responses, we recommend focusing on maintaining a
-            balanced diet and regular exercise to improve your overall health.
+          <p className="text-xl">
+            Overall Score {attemptData.overallScore}
           </p>
+          {/* <p className="text-gray-700 text-base text-center">
+            Your Overall score is excellent
+          </p> */}
+          <div className="mt-4">
+            {overallScoreKey &&
+              overallAdvice[overallScoreKey].map((advice, index) => (
+                <div key={index} className="mb-2 flex space-x-2">
+                  <p className="text-base font-semibold text-gray-800">
+                    {advice.heading}
+                  </p>
+                  <p className="text-base text-gray-700">
+                    {advice.description}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
 
         {/* Category Scores Section */}
