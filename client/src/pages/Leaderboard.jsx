@@ -19,6 +19,7 @@ function Leaderboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLeaderboardData(response.data.leaderboard);
+      console.log({leaderboardData});
     } catch (error) {
       console.error('Error fetching leaderboard:', error.message);
       setIsError(true);

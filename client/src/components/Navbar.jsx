@@ -26,9 +26,12 @@ const Navbar = () => {
   }, [location])
 
   return (
-    <nav className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-md shadow-md p-4 fixed top-0 w-full z-10">
+    <nav className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-md shadow-md p-3 fixed top-0 w-full z-10">
       <div className="container mx-auto flex items-center justify-between">
-        <div>
+        <div className="flex space-x-2 items-center">
+          <div className="bg-white p-1 rounded-full">
+            <img src="../../logo-cropped.png" className="w-8" alt="" />
+          </div>
           <h1 className="font-bold font-sans text-2xl bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-blue-400 to-blue-600">
             HealthCheckPro
           </h1>
@@ -85,7 +88,7 @@ const Navbar = () => {
                 Dashboard
               </Link>
 
-              { /\/report\/attempt\/[^/]+/.test(location.pathname) && (
+              {/\/report\/attempt\/[^/]+/.test(location.pathname) && (
                 <Link
                   to="/report"
                   className={`hover:cursor-pointer text-blue-500 hover:text-green-400 font-bold`}
@@ -138,6 +141,17 @@ const Navbar = () => {
                 Assessment
               </Link>
               <Link
+                to="/leaderboard"
+                onClick={() => setIsOpen(false)}
+                className={`hover:cursor-pointer text-blue-500 hover:text-green-500 ${
+                  location.pathname === "/leaderboard"
+                    ? "font-bold"
+                    : "font-medium"
+                }`}
+              >
+                Leaderboard
+              </Link>
+              <Link
                 to="/dashboard"
                 onClick={() => setIsOpen(false)}
                 className={`hover:cursor-pointer text-blue-500 hover:text-green-500 ${
@@ -154,7 +168,7 @@ const Navbar = () => {
                   logout();
                   setIsOpen(false);
                 }}
-                className="hover:cursor-pointer text-blue-500 hover:text-green-500 font-medium"
+                className="hover:cursor-pointer text-red-400 hover:text-red-500 font-medium"
               >
                 Logout
               </Link>
