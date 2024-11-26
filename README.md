@@ -187,9 +187,31 @@ server/
 ## Screenshots
 
 <table>
+    <tr>Authentication</tr>
     <tr>
         <td><img src="assets/Register.png" /> </td>
         <td><img src="assets/Signin.png" /></td>
         <td><img src="assets/Forgot.png" /></td>
+    </tr>
+</table>
+<table>
+    <tr>Dashboard</tr>
+    <tr>
+        <td><img src="assets/dashboard.png" /> </td>
+        <td><img src="assets/history.png" /></td>
+    </tr>
+</table>
+<table>
+    <tr>Assessment</tr>
+    <tr>
+        <td><img src="assets/assessment.png" /> </td>
+    </tr>
+</table>
+<table>
+    <tr>Report</tr>
+    <tr>
+        <td><img src="assets/report1.png" /> </td>
+        <td><img src="assets/report2.png" /></td>
+        <td><img src="assets/report3.png" /></td>
     </tr>
 </table>
