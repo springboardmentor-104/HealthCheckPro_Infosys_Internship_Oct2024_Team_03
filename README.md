@@ -1,6 +1,15 @@
 # HealthCheckPro_Infosys_Internship_Oct2024_Team_03
 Health Check Pro is a user-friendly health website built using the MERN stack
 
+## Table of Contents 
+1. [Project Setup](#project-setup)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Running the Project](#running-the-project)
+2. [Technologies Used](#technologies-used) 
+3. [Project Structure](#project-structure) 
+4. [Screenshots](#screenshots) 
+
 ## Project Setup
 
 ### Prerequisites
@@ -118,3 +127,69 @@ cd server
 nodemon
 ```
 
+## Technologies Used
+- Frontend,
+    - React.js
+    - Tailwind CSS
+    - Radix UI
+
+- Backend:
+    - Express.js
+    - Mongoose
+    - MongoDB
+    - MongoDB Atlas
+    - Nodemailer
+    - JWT (JSON Web Tokens)
+    - Bcrypt
+
+## Project Structure
+
+```
+client/
+|-- public/                  # Static files like images, fonts, etc.
+|-- src/                     # Source code for the application
+|   |-- app/                 # Application-level components and configuration
+|   |-- assets/              # Images, fonts, and other static assets
+|   |-- components/          # Reusable UI components
+|   |-- features/            # Feature-specific components and logic
+|   |-- pages/               # Page components for different routes
+|   |-- utils/               # Utility functions and helpers
+|   |-- App.css              # Main stylesheet for the application
+|   |-- App.jsx              # Main application component
+|   |-- index.css            # Global stylesheet
+|   |-- index.jsx            # Entry point for the React application
+|   |-- Layout.jsx           # Layout component
+|   |-- Routes.jsx           # Route definitions
+|-- .gitignore               # Git ignore file
+|-- eslint.config.js         # ESLint configuration
+|-- index.html               # HTML template for the application
+|-- package-lock.json        # Lock file for npm
+|-- package.json             # Project metadata and dependencies
+|-- postcss.config.js        # PostCSS configuration
+|-- README.md                # Project documentation
+|-- tailwind.config.js       # Tailwind CSS configuration
+|-- vite.config.js           # Vite configuration
+
+server/
+|-- config/                  # Configuration files
+|-- controllers/             # Route handlers and business logic
+|-- middlewares/             # Express middlewares
+|-- models/                  # Mongoose models
+|-- routes/                  # API route definitions
+|-- utils/                   # Utility functions
+|-- .env                     # Environment variables
+|-- index.js                 # Entry point for the server
+|-- package-lock.json        # Lock file for npm
+|-- package.json             # Project metadata and dependencies
+
+```
+
+## Screenshots
+
+<table>
+    <tr>
+        <td><img src="assets/Register.png" /> </td>
+        <td><img src="assets/Signin.png" /></td>
+        <td><img src="assets/Forgot.png" /></td>
+    </tr>
+</table>
