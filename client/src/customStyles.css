@@ -1,0 +1,293 @@
+/* Global Styles */
+
+/* Carousel */
+.carousel {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    justify-content: center; /* Center carousel images */
+    padding-top: 5rem;
+}
+
+.carousel img {
+    flex-shrink: 0;
+    width: 110%;
+    height: 500px;
+    object-fit: cover;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Hero Section */
+.hero-section {
+    /* background: linear-gradient(to right, #48c78e, #4299e1);  Gradient from green to blue */
+    padding-top: 10rem;  /* Increased top padding */
+    padding-bottom: 3rem;  /* Increased bottom padding */
+    padding-left: 2rem;
+    padding-right: 2rem;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.hero-section p {
+    font-size: 1.125rem;
+    color: #ffffff; /* Equivalent to text-gray-700 in Tailwind */
+    margin-bottom: 2rem;
+}
+
+.hero-section button {
+    background-color: #ffffff;
+    color: #4299e1;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.2s;
+    border: none;
+}
+
+.hero-section button:hover {
+    background-color: #48c78e; /* Hover color */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.hero-section button:active {
+    transform: translateY(0); /* Reset lift effect */
+}
+
+/* Assessment Section */
+.assessment-section {
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
+    padding: 6rem 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.assessment-form {
+    background-color: rgba(255, 255, 255, 0.85); /* Glass effect */
+    backdrop-filter: blur(15px); /* Stronger blur for glass effect */
+    padding: 3rem 4rem;
+    border-radius: 1rem;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2); /* Soft shadow for separation */
+    width: 100%;
+    max-width: 900px;
+}
+
+.assessment-form h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 2rem;
+}
+
+.assessment-form h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4299e1;
+    margin-bottom: 1.5rem;
+}
+
+.question {
+    margin-bottom: 2rem;
+}
+
+.question label {
+    font-size: 1.125rem;
+    color: #4B5563;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.input-field {
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    width: 100%;
+    margin-top: 0.5rem;
+    border: 1px solid #E5E7EB;
+    background-color: #F9FAFB;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border: 1px solid #1D4ED8;
+}
+
+.assessment-submit-btn {
+    background-color: #4299e1;
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 9999px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.2s;
+    border: none;
+    margin-top: 2rem;
+}
+
+.assessment-submit-btn:hover {
+    background-color: #1E40AF; /* Hover color */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.assessment-submit-btn:active {
+    transform: translateY(0); /* Reset lift effect */
+}
+
+/* Articles Section */
+.articles-section {
+    padding: 5rem 2rem;
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
+    text-align: center;
+}
+
+.articles-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 6rem;
+}
+
+.article-card {
+    background-color: rgba(255, 255, 255, 0.85); /* Increased transparency */
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+    backdrop-filter: blur(15px); /* Increased blur for stronger glassmorphism effect */
+    transition: box-shadow 0.3s;
+    margin-bottom: 2rem;
+}
+
+.article-card:hover {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.25);
+}
+
+.article-card img {
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.article-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4299e1;
+    margin-bottom: 0.5rem;
+}
+
+.article-card p {
+    color: #4B5563;
+}
+
+/* Dashboard Section */
+.dashboard-section {
+    padding: 5rem 2rem;
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
+    text-align: center;
+}
+
+.dashboard-card {
+    background-color: rgba(255, 255, 255, 0.85); /* Increased transparency */
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+    backdrop-filter: blur(15px); /* Increased blur for stronger glassmorphism effect */
+    transition: box-shadow 0.3s;
+    margin-bottom: 2rem;
+}
+
+.dashboard-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4299e1;
+    margin-bottom: 1rem;
+}
+
+/* Profile Section */
+.profile-section {
+    /* background: linear-gradient(to right, #48c78e, #4299e1); */
+    padding: 5rem 2rem;
+}
+
+.profile-card {
+    background-color: rgba(255, 255, 255, 0.85); /* Increased transparency */
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+    backdrop-filter: blur(15px); /* Increased blur for stronger glassmorphism effect */
+    transition: box-shadow 0.3s;
+}
+
+.profile-picture {
+    border-radius: 9999px;
+    margin-right: 1rem;
+}
+
+/* Input Section */
+.input-section {
+    /* background: linear-gradient(to right, #48c78e, #4299e1); Gradient from green to blue */
+    padding: 6rem 2rem;
+    color: white;
+    text-align: center;
+}
+
+.input-section input {
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    color: #4B5563;
+    margin-right: 1rem;
+    border: none;
+    outline: none;
+    width: 80%;
+}
+
+.input-section input:focus {
+    border: 2px solid #E5E7EB; /* Focus effect */
+}
+
+.input-section button {
+    background-color: white;
+    color: #4299e1;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.2s;
+    border: none;
+    margin-top: 1rem;
+}
+
+.input-section button:hover {
+    background-color: #E5E7EB;
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.input-section button:active {
+    transform: translateY(0); /* Reset lift effect */
+}
+
+/* Quote Section */
+.quote-section {
+    /* background: linear-gradient(to right, #48c78e, #4299e1); */
+    padding: 6rem 2rem;
+    color: white;
+    text-align: center;
+}
+
+.quote-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.quote-section blockquote {
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: #F3F4F6;
+}
