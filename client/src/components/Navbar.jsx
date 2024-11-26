@@ -26,7 +26,7 @@ const Navbar = () => {
   }, [location])
 
   return (
-    <nav className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-md shadow-md p-3 fixed top-0 w-full z-10">
+    <nav className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-md shadow-md py-2 md:py-3 px-4 lg:px-6 fixed top-0 w-full z-10">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex space-x-2 items-center">
           <div className="bg-white p-1 rounded-full">
