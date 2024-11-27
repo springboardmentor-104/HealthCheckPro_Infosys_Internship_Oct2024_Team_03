@@ -2,19 +2,31 @@ import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import transporter from "../config/nodemailer.js";
 import crypto from "crypto";
+import Joi from "joi";
 import { generateToken } from "../utils/jwt.js";
 
 let otpStore = {}; // temporary store for OTPs
 let verifiedEmails = {}; // temporary store for verified mails
 
+// Validation Schemas
+const emailSchema = Joi.string().email().required();
+const passwordSchema = Joi.string().min(8).required();
+const otpSchema = Joi.string().length(6).required();
+const userSchema = Joi.object({
+  username: Joi.string().alphanum().min(3).max(30).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+  name: Joi.string().min(3).required(),
+  gender: Joi.string().valid("Male", "Female", "Other").required(),
+  dateOfBirth: Joi.date().iso().required()
+})
+
 export const sendOTP = async (req, res) => {
   const { email } = req.body;
-  console.log("sending OTP");
 
   try {
     const otp = crypto.randomInt(100000, 999999).toString();
     otpStore[email] = otp; // store otp temporarily
-    // console.log(otpStore[email])
 
     const mailOptions = {
       from: process.env.EMAIL,
@@ -40,6 +52,12 @@ export const sendOTP = async (req, res) => {
 export const verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
 
+  const { error: emailError } = emailSchema.validate(email);
+  const { error: otpError } = otpSchema.validate(otp);
+
+  if(emailError || otpError)
+    return res.status(400).json({ error: "Invalid input!" });
+
   if (otpStore[email] === otp) {
     verifiedEmails[email] = true;
     delete otpStore[email];
@@ -51,6 +69,10 @@ export const verifyOTP = async (req, res) => {
 
 export const signup = async (req, res) => {
   let { username, email, password, name, gender, dateOfBirth } = req.body;
+
+  const { error } = userSchema.validate({ username, email, password, name, gender, dateOfBirth });
+  if(error) 
+    return res.status(400).json({ error: error.details[0].message });
 
   if (!verifiedEmails[email]) {
     return res.status(400).json({ error: `${email} is not verified!` });
@@ -75,12 +97,16 @@ export const signup = async (req, res) => {
     res.status(201).json({ message: "User registered successfully!" });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
+
+  const { error } = emailSchema.validate(email);
+  if(error) 
+    return res.status(400).json({ error: "Invalid email format!" });
 
   try {
     const user = await User.findOne({ email });
@@ -99,12 +125,18 @@ export const signIn = async (req, res) => {
 
     res.status(200).json({ message: "Logged in successfully!", user, token });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Internal Server Error!" });
   }
 };
 
 export const resetPassword = async (req, res) => {
   const { email, newPassword } = req.body;
+
+  const { error: emailError } = emailSchema.validate(email);
+  const { error: passwordError } = passwordSchema.validate(newPassword);
+
+  if(emailError || passwordError) 
+    return res.status(400).json({ error: "Invalid Input!" });
 
   try {
     const user = await User.findOne({ email });

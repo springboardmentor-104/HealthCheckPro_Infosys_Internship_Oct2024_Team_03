@@ -2,10 +2,34 @@ import UserAssessmentHistory from "../models/UserAssessmentHistory.js";
 import Category from "../models/Category.js";
 import Question from "../models/Question.js";
 import { updateLeaderBoard } from "./leaderboard.js";
+import Joi from "joi";
+import mongoose from "mongoose"
+
+// Validation Schema
+const objectValidation = (value, helpers) => {
+  if (!mongoose.Types.ObjectId.isValid(value))
+    return helpers.message("Invalid ObjectId");
+  return value;
+};
+
+const schema = Joi.object({
+  categoryId: Joi.string().custom(objectValidation).required(),
+  questions: Joi.array().items(
+    Joi.object({
+      questionId: Joi.string().custom(objectValidation).required(),
+      selectedOptionId: Joi.string().custom(objectValidation).required()
+    })
+  ).required()
+})
 
 export const checkUserAssessmentStatus = async (req, res) => {
     try {
         const userId = req.user._id;
+
+        const { error: userIdError } = Joi.string().custom(objectValidation).required().validate(userId);
+        if(userIdError)
+          return res.status(400).json({ error: error.details[0].message })
+
         const history = await UserAssessmentHistory.find({ userId }).sort({ attemptNumber: -1 });
         const attemptNumber = history.length;
 
@@ -25,6 +49,7 @@ export const checkUserAssessmentStatus = async (req, res) => {
     }
 }
 
+/*
 export const startNewRound = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -48,12 +73,21 @@ export const startNewRound = async (req, res) => {
         res.status(500).json({ message: "Server Error!", error });
     }
 }
+*/
 
 export const submitCatgegoryTest = async (req, res) => {
   try {
     const userId = req.user._id;
     const username = req.user.username;
     const { categoryId, questions } = req.body;
+
+    const { error: userIdError } = Joi.string().custom(objectValidation).required().validate(userId);
+    if(userIdError)
+      return res.status(400).json({ error: error.details[0].message })
+
+    const { error } = schema.validate({ categoryId, questions }); 
+    if(error)
+      return res.status(400).json({ error: error.details[0].message });
 
     // caculate total score of user in specific category assessment
     let totalScore = 0;
@@ -133,6 +167,11 @@ export const submitCatgegoryTest = async (req, res) => {
 export const fetchUserLatestAssessment = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming userId is attached to the req object
+    
+    const { error: userIdError } = Joi.string().custom(objectValidation).required().validate(userId);
+    if(userIdError)
+      return res.status(400).json({ error: error.details[0].message })
+    
     const latestAttempts = await UserAssessmentHistory.find({ userId }).sort({ attemptNumber: -1 }).limit(2);
 
     // Process the latest attempts to exclude the questions array
@@ -164,6 +203,11 @@ export const fetchUserLatestAssessment = async (req, res) => {
 export const fetchUserAssessmentHistory = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming userId is attached to the req object
+
+    const { error: userIdError } = Joi.string().custom(objectValidation).required().validate(userId);
+    if(userIdError)
+      return res.status(400).json({ error: error.details[0].message })
+
     const allAttempts = await UserAssessmentHistory.find({ userId }).sort({ attemptNumber: -1 });
 
     if (allAttempts && allAttempts.length > 0) {
@@ -192,14 +236,21 @@ export const getAttemptById = async(req, res) => {
     const userId = req.user._id;
     const attemptId = req.params.attemptId;
 
+    const { error: userIdError } = Joi.string().custom(objectValidation).required().validate(userId);
+    if(userIdError)
+      return res.status(400).json({ error: error.details[0].message })
+
+    const { error: attemptIdError } = Joi.string().custom(objectValidation).required().validate(attemptId);
+    if(attemptIdError)
+      return res.status(400).json({ error: error.details[0].message });
+
     const attemptDoc = await UserAssessmentHistory.findOne({ _id: attemptId });
 
     if(!attemptDoc)
       return res.status(404).json({ message: "Attempt Not Found" });
 
-    // ********* ||||||||
-    // if(attemptDoc.userId !== userId)
-    //   return res.status(403).json({ message: "Unauthorized Access! "});
+    if(attemptDoc.userId.toString() !== userId)
+      return res.status(403).json({ message: "Unauthorized Access! "});
 
     const { assessments, ...restFields } = attemptDoc.toObject(); // convert mongoose object to JS object for destructuring process
 
@@ -220,14 +271,22 @@ export const getAssessmentFromAttempt = async (req, res) => {
     const userId = req.user._id;
     const { attemptId, categoryId } = req.params;
 
+    const { error: userIdError } = Joi.string().custom(objectValidation).required().validate(userId);
+    if(userIdError)
+      return res.status(400).json({ error: error.details[0].message })
+
+    const { error: attemptIdError } = Joi.string().custom(objectValidation).required().validate(attemptId);
+    const { error: categoryIdError } = Joi.string().custom(objectValidation).required().validate(categoryId);
+    if(attemptIdError || categoryIdError)
+      return res.status(400).json({ error: error.details[0].message });
+
     const assessmentDoc = await UserAssessmentHistory.findOne({ _id: attemptId });
     
     if(!assessmentDoc)
       return res.status(404).json({ message: "Attempt Not Found" });
 
-    // ****************|||||||||||||||||||||
-    // if(assessmentDoc.userId.toString() !== userId.toString()) // toString() is used to conver ObjectId into string for comparison
-    //   return res.status(403).json({ message: "Unauthorized Access!" });
+    if(assessmentDoc.userId.toString() !== userId) // toString() is used to conver ObjectId into string for comparison
+      return res.status(403).json({ message: "Unauthorized Access!" });
 
     const categoryAssessment = assessmentDoc.assessments.find(assessment => assessment.categoryId.toString() === categoryId);
 

@@ -7,6 +7,9 @@ export const isAdmin = async (req, res, next) => {
     const userId = req.headers.userid;
     const user = await User.findById(userId);
 
+    if(!user) 
+      return res.status(404).json({ error: "User not found!" });
+
     if (user && user.isAdmin) {
       req.user = user;
       next();
